@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# Bump WP LLMS version across all source-of-truth files.
+# Bump plugin version across all source-of-truth files.
 #
 # Updates:
-#   - plugin/wp-llms.php  (Plugin Header "Version:" + WPLLMS_VERSION constant)
+#   - plugin/llms-txt.php  (Plugin Header "Version:" + WPLLMS_VERSION constant)
 #   - plugin/readme.txt       (Stable tag)
 #   - plugin/CHANGELOG.md     (rotates [Unreleased] into a new versioned section)
 #
@@ -28,7 +28,7 @@ if ! [[ "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
 fi
 
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
-PLUGIN_FILE="$PROJECT_ROOT/plugin/wp-llms.php"
+PLUGIN_FILE="$PROJECT_ROOT/plugin/llms-txt.php"
 README_FILE="$PROJECT_ROOT/plugin/readme.txt"
 CHANGELOG_FILE="$PROJECT_ROOT/plugin/CHANGELOG.md"
 
@@ -89,5 +89,5 @@ echo "  $PLUGIN_FILE     (Version header + WPLLMS_VERSION constant)"
 echo "  $README_FILE     (Stable tag)"
 echo "  $CHANGELOG_FILE  (rotated [Unreleased] -> [$NEW_VERSION] - $TODAY)"
 echo ""
-echo "Review:  git diff plugin/wp-llms.php plugin/readme.txt plugin/CHANGELOG.md"
+echo "Review:  git diff plugin/llms-txt.php plugin/readme.txt plugin/CHANGELOG.md"
 echo "Build:   ./build.sh"

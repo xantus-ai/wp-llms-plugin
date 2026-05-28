@@ -193,7 +193,7 @@ final class FileServer {
         header('Last-Modified: ' . $last_modified);
         header('ETag: ' . $etag);
         header('X-Robots-Tag: all');
-        header('X-Generated-By: WP LLMS/' . WPLLMS_VERSION);
+        header('X-Generated-By: llms-txt-for-wordpress/' . WPLLMS_VERSION);
 
         $if_none_match = $_SERVER['HTTP_IF_NONE_MATCH'] ?? '';
         if (is_string($if_none_match) && $if_none_match === $etag) {

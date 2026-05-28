@@ -1,10 +1,17 @@
 # Changelog
 
-All notable changes to the WP LLMS plugin will be documented in this file.
+All notable changes to the llms.txt for WordPress plugin will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.1.8] - 2026-05-28
+
+### Changed
+- Renamed the user-facing plugin to **llms.txt for WordPress** (WP.org slug `llms-txt`, text domain `llms-txt`). The WordPress trademark policy prohibits plugin names starting with "WP", so the previous name "WP LLMS" would have been rejected at WP.org review. Main PHP file renamed to `llms-txt.php`, build artifact renamed to `llms-txt.zip`, dashboard menu label is now "llms.txt".
+- Internal PHP namespace (`WPLlms\`), constants (`WPLLMS_*`), hook prefixes (`wpllms_`), DB table names, and option keys are unchanged — this is a surface-level rename only, no migration required.
+- `readme.txt` rewritten for the WordPress.org listing: synced changelog from CHANGELOG.md, removed stale references to a paid tier, updated description and FAQ.
 
 ## [0.1.7] - 2026-05-28
 

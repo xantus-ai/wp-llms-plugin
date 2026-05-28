@@ -39,11 +39,11 @@ final class StaleContent extends AbstractRule {
             $this->severity(),
             sprintf(
                 /* translators: 1: age in months, 2: threshold in months */
-                __('This content was last updated %1$d months ago (threshold: %2$d months). Stale content signals to AI systems that the site may not be actively maintained.', 'wp-llms'),
+                __('This content was last updated %1$d months ago (threshold: %2$d months). Stale content signals to AI systems that the site may not be actively maintained.', 'llms-txt'),
                 $age_months,
                 $threshold
             ),
-            __('Either update the content with current information, or exclude this page from llms.txt if it is no longer maintained.', 'wp-llms')
+            __('Either update the content with current information, or exclude this page from llms.txt if it is no longer maintained.', 'llms-txt')
         );
     }
 

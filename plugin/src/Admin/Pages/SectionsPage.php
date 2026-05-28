@@ -18,32 +18,32 @@ final class SectionsPage {
         $sections = $repo->all();
 
         echo '<div class="wrap">';
-        echo '<h1 class="wp-heading-inline">' . esc_html__('Sections', 'wp-llms') . '</h1>';
-        echo ' <a href="' . esc_url(admin_url('admin.php?page=' . SectionEditPage::PAGE_SLUG)) . '" class="page-title-action">' . esc_html__('Add new', 'wp-llms') . '</a>';
+        echo '<h1 class="wp-heading-inline">' . esc_html__('Sections', 'llms-txt') . '</h1>';
+        echo ' <a href="' . esc_url(admin_url('admin.php?page=' . SectionEditPage::PAGE_SLUG)) . '" class="page-title-action">' . esc_html__('Add new', 'llms-txt') . '</a>';
         echo '<hr class="wp-header-end">';
-        echo '<p>' . esc_html__('Sections become H2 headings in your llms.txt. Each section pulls posts via an inclusion rule.', 'wp-llms') . '</p>';
+        echo '<p>' . esc_html__('Sections become H2 headings in your llms.txt. Each section pulls posts via an inclusion rule.', 'llms-txt') . '</p>';
 
         if (isset($_GET['saved'])) {
-            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Section saved.', 'wp-llms') . '</p></div>';
+            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Section saved.', 'llms-txt') . '</p></div>';
         }
 
         if (count($sections) === 0) {
             ?>
-            <p><?php esc_html_e('No sections configured yet. Run the setup wizard or add a section manually.', 'wp-llms'); ?></p>
+            <p><?php esc_html_e('No sections configured yet. Run the setup wizard or add a section manually.', 'llms-txt'); ?></p>
             <p>
-                <a class="button button-primary" href="<?php echo esc_url(admin_url('admin.php?page=wpllms-wizard')); ?>"><?php esc_html_e('Run setup wizard', 'wp-llms'); ?></a>
-                <a class="button" href="<?php echo esc_url(admin_url('admin.php?page=' . SectionEditPage::PAGE_SLUG)); ?>"><?php esc_html_e('Add a section manually', 'wp-llms'); ?></a>
+                <a class="button button-primary" href="<?php echo esc_url(admin_url('admin.php?page=wpllms-wizard')); ?>"><?php esc_html_e('Run setup wizard', 'llms-txt'); ?></a>
+                <a class="button" href="<?php echo esc_url(admin_url('admin.php?page=' . SectionEditPage::PAGE_SLUG)); ?>"><?php esc_html_e('Add a section manually', 'llms-txt'); ?></a>
             </p>
             <?php
         } else {
             ?>
             <table class="widefat striped">
                 <thead><tr>
-                    <th><?php esc_html_e('Sort', 'wp-llms'); ?></th>
-                    <th><?php esc_html_e('Name', 'wp-llms'); ?></th>
-                    <th><?php esc_html_e('Optional', 'wp-llms'); ?></th>
-                    <th><?php esc_html_e('Inclusion rule', 'wp-llms'); ?></th>
-                    <th><?php esc_html_e('Actions', 'wp-llms'); ?></th>
+                    <th><?php esc_html_e('Sort', 'llms-txt'); ?></th>
+                    <th><?php esc_html_e('Name', 'llms-txt'); ?></th>
+                    <th><?php esc_html_e('Optional', 'llms-txt'); ?></th>
+                    <th><?php esc_html_e('Inclusion rule', 'llms-txt'); ?></th>
+                    <th><?php esc_html_e('Actions', 'llms-txt'); ?></th>
                 </tr></thead>
                 <tbody>
                     <?php foreach ($sections as $section) :
@@ -71,12 +71,12 @@ final class SectionsPage {
                         <tr>
                             <td><?php echo esc_html((string) $section['sort_order']); ?></td>
                             <td><strong><a href="<?php echo esc_url($edit_url); ?>"><?php echo esc_html((string) $section['name']); ?></a></strong></td>
-                            <td><?php echo !empty($section['is_optional']) ? esc_html__('Yes', 'wp-llms') : '—'; ?></td>
+                            <td><?php echo !empty($section['is_optional']) ? esc_html__('Yes', 'llms-txt') : '—'; ?></td>
                             <td><code><?php echo esc_html($rule_label); ?></code></td>
                             <td>
-                                <a href="<?php echo esc_url($edit_url); ?>"><?php esc_html_e('Edit', 'wp-llms'); ?></a>
+                                <a href="<?php echo esc_url($edit_url); ?>"><?php esc_html_e('Edit', 'llms-txt'); ?></a>
                                 |
-                                <a href="<?php echo esc_url($delete_url); ?>" onclick="return confirm('Delete this section?')" style="color:#b32d2e"><?php esc_html_e('Delete', 'wp-llms'); ?></a>
+                                <a href="<?php echo esc_url($delete_url); ?>" onclick="return confirm('Delete this section?')" style="color:#b32d2e"><?php esc_html_e('Delete', 'llms-txt'); ?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -90,7 +90,7 @@ final class SectionsPage {
 
     public static function handle_post(): void {
         if (!current_user_can('manage_options')) {
-            wp_die(esc_html__('Insufficient permissions.', 'wp-llms'));
+            wp_die(esc_html__('Insufficient permissions.', 'llms-txt'));
         }
         check_admin_referer(self::NONCE_ACTION, self::NONCE_NAME);
 

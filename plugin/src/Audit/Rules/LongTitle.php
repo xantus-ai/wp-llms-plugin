@@ -30,10 +30,10 @@ final class LongTitle extends AbstractRule {
             $this->severity(),
             sprintf(
                 /* translators: %d: character count */
-                __('Page title is %d characters. Long titles get truncated in search results.', 'wp-llms'),
+                __('Page title is %d characters. Long titles get truncated in search results.', 'llms-txt'),
                 mb_strlen($title)
             ),
-            __('Trim the title to under 65 characters while keeping the primary topic.', 'wp-llms')
+            __('Trim the title to under 65 characters while keeping the primary topic.', 'llms-txt')
         );
     }
 }

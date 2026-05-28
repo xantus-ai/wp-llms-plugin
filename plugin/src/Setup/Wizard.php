@@ -66,12 +66,12 @@ final class Wizard {
         $context = trim((string) ($input['site_context'] ?? ''));
 
         if ($h1 === '') {
-            $errors['site_h1'] = __('Required.', 'wp-llms');
+            $errors['site_h1'] = __('Required.', 'llms-txt');
         }
         if ($summary === '') {
-            $errors['site_summary'] = __('Required. Write 1-3 sentences describing what your site does.', 'wp-llms');
+            $errors['site_summary'] = __('Required. Write 1-3 sentences describing what your site does.', 'llms-txt');
         } elseif (mb_strlen($summary) > 500) {
-            $errors['site_summary'] = __('Keep the summary under 500 characters.', 'wp-llms');
+            $errors['site_summary'] = __('Keep the summary under 500 characters.', 'llms-txt');
         }
 
         if (count($errors) > 0) {

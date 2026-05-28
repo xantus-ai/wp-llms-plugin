@@ -26,8 +26,8 @@ final class ThinMeta extends AbstractRule {
                 $post->ID,
                 $this->key(),
                 $this->severity(),
-                __('No meta description set. AI systems will fall back to extracting from page content, which is less reliable.', 'wp-llms'),
-                __('Add a meta description in your SEO plugin (Yoast, RankMath, etc.) of 70-160 characters that describes the page.', 'wp-llms')
+                __('No meta description set. AI systems will fall back to extracting from page content, which is less reliable.', 'llms-txt'),
+                __('Add a meta description in your SEO plugin (Yoast, RankMath, etc.) of 70-160 characters that describes the page.', 'llms-txt')
             );
         }
 
@@ -38,10 +38,10 @@ final class ThinMeta extends AbstractRule {
                 $this->severity(),
                 sprintf(
                     /* translators: %d: character count */
-                    __('Meta description is only %d characters. Aim for 70-160 characters for full context.', 'wp-llms'),
+                    __('Meta description is only %d characters. Aim for 70-160 characters for full context.', 'llms-txt'),
                     mb_strlen($meta)
                 ),
-                __('Expand the meta description to give AI systems a clearer summary of the page.', 'wp-llms')
+                __('Expand the meta description to give AI systems a clearer summary of the page.', 'llms-txt')
             );
         }
 

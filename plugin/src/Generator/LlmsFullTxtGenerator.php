@@ -99,7 +99,7 @@ final class LlmsFullTxtGenerator {
             return '';
         }
 
-        return "## " . __('Optional', 'wp-llms') . "\n\n" . implode("\n\n", $sub_blocks);
+        return "## " . __('Optional', 'llms-txt') . "\n\n" . implode("\n\n", $sub_blocks);
     }
 
     private function render_post(WP_Post $post, ?int $section_id, int $heading_level): string {

@@ -30,11 +30,11 @@ final class ShortTitle extends AbstractRule {
             $this->severity(),
             sprintf(
                 /* translators: 1: title, 2: char count */
-                __('The page title "%1$s" is only %2$d characters. Short titles give AI systems less context.', 'wp-llms'),
+                __('The page title "%1$s" is only %2$d characters. Short titles give AI systems less context.', 'llms-txt'),
                 $title,
                 mb_strlen($title)
             ),
-            __('Expand the title to be more descriptive. Aim for 30-65 characters that include the page\'s primary topic.', 'wp-llms')
+            __('Expand the title to be more descriptive. Aim for 30-65 characters that include the page\'s primary topic.', 'llms-txt')
         );
     }
 }

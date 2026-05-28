@@ -18,19 +18,19 @@ final class AuditPage {
         $issues = $repo->unresolved(200);
 
         echo '<div class="wrap">';
-        echo '<h1>' . esc_html__('Content Audit', 'wp-llms') . '</h1>';
+        echo '<h1>' . esc_html__('Content Audit', 'llms-txt') . '</h1>';
 
         if (isset($_GET['audit_done'])) {
-            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Audit complete.', 'wp-llms') . '</p></div>';
+            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Audit complete.', 'llms-txt') . '</p></div>';
         }
 
         ?>
         <p>
-            <?php esc_html_e('Quality issues we found across your published content.', 'wp-llms'); ?>
+            <?php esc_html_e('Quality issues we found across your published content.', 'llms-txt'); ?>
             <?php if (is_array($last) && !empty($last['completed_at'])) : ?>
                 <em><?php
                     /* translators: 1: timestamp, 2: posts audited count */
-                    printf(esc_html__('Last full audit: %1$s (%2$d posts).', 'wp-llms'),
+                    printf(esc_html__('Last full audit: %1$s (%2$d posts).', 'llms-txt'),
                         esc_html((string) $last['completed_at']),
                         (int) ($last['posts_audited'] ?? 0));
                 ?></em>
@@ -39,32 +39,32 @@ final class AuditPage {
 
         <table class="widefat" style="max-width:600px">
             <thead><tr>
-                <th><?php esc_html_e('Severity', 'wp-llms'); ?></th>
-                <th><?php esc_html_e('Open issues', 'wp-llms'); ?></th>
+                <th><?php esc_html_e('Severity', 'llms-txt'); ?></th>
+                <th><?php esc_html_e('Open issues', 'llms-txt'); ?></th>
             </tr></thead>
             <tbody>
-                <tr><td><strong style="color:#b32d2e"><?php esc_html_e('Critical', 'wp-llms'); ?></strong></td><td><?php echo esc_html((string) $counts['critical']); ?></td></tr>
-                <tr><td><strong style="color:#b07d00"><?php esc_html_e('Warning', 'wp-llms'); ?></strong></td><td><?php echo esc_html((string) $counts['warning']); ?></td></tr>
-                <tr><td><?php esc_html_e('Info', 'wp-llms'); ?></td><td><?php echo esc_html((string) $counts['info']); ?></td></tr>
+                <tr><td><strong style="color:#b32d2e"><?php esc_html_e('Critical', 'llms-txt'); ?></strong></td><td><?php echo esc_html((string) $counts['critical']); ?></td></tr>
+                <tr><td><strong style="color:#b07d00"><?php esc_html_e('Warning', 'llms-txt'); ?></strong></td><td><?php echo esc_html((string) $counts['warning']); ?></td></tr>
+                <tr><td><?php esc_html_e('Info', 'llms-txt'); ?></td><td><?php echo esc_html((string) $counts['info']); ?></td></tr>
             </tbody>
         </table>
 
         <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="margin:16px 0">
             <?php wp_nonce_field(self::NONCE_ACTION, self::NONCE_NAME); ?>
             <input type="hidden" name="action" value="<?php echo esc_attr(self::FORM_ACTION); ?>">
-            <button type="submit" class="button"><?php esc_html_e('Run full-site audit now', 'wp-llms'); ?></button>
+            <button type="submit" class="button"><?php esc_html_e('Run full-site audit now', 'llms-txt'); ?></button>
         </form>
 
-        <h2><?php esc_html_e('Open issues', 'wp-llms'); ?></h2>
+        <h2><?php esc_html_e('Open issues', 'llms-txt'); ?></h2>
         <?php if (count($issues) === 0) : ?>
-            <p><?php esc_html_e('No issues. Run the audit to populate.', 'wp-llms'); ?></p>
+            <p><?php esc_html_e('No issues. Run the audit to populate.', 'llms-txt'); ?></p>
         <?php else : ?>
             <table class="widefat striped">
                 <thead><tr>
-                    <th><?php esc_html_e('Severity', 'wp-llms'); ?></th>
-                    <th><?php esc_html_e('Rule', 'wp-llms'); ?></th>
-                    <th><?php esc_html_e('Post', 'wp-llms'); ?></th>
-                    <th><?php esc_html_e('Message', 'wp-llms'); ?></th>
+                    <th><?php esc_html_e('Severity', 'llms-txt'); ?></th>
+                    <th><?php esc_html_e('Rule', 'llms-txt'); ?></th>
+                    <th><?php esc_html_e('Post', 'llms-txt'); ?></th>
+                    <th><?php esc_html_e('Message', 'llms-txt'); ?></th>
                 </tr></thead>
                 <tbody>
                     <?php foreach ($issues as $issue) :
@@ -99,7 +99,7 @@ final class AuditPage {
 
     public static function handle_run(): void {
         if (!current_user_can('manage_options')) {
-            wp_die(esc_html__('Insufficient permissions.', 'wp-llms'));
+            wp_die(esc_html__('Insufficient permissions.', 'llms-txt'));
         }
         check_admin_referer(self::NONCE_ACTION, self::NONCE_NAME);
 

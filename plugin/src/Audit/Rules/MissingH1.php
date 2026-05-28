@@ -32,8 +32,8 @@ final class MissingH1 extends AbstractRule {
             $post->ID,
             $this->key(),
             $this->severity(),
-            __('No <h1> heading found in page content. AI search systems rely on the H1 to understand what a page is about.', 'wp-llms'),
-            __('Add an H1 heading near the top of the page that clearly states the topic.', 'wp-llms')
+            __('No <h1> heading found in page content. AI search systems rely on the H1 to understand what a page is about.', 'llms-txt'),
+            __('Add an H1 heading near the top of the page that clearly states the topic.', 'llms-txt')
         );
     }
 }

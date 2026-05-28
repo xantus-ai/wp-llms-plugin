@@ -31,7 +31,7 @@ final class HeaderRenderer {
         if ($summary !== '') {
             $lines[] = '> ' . $this->collapse_blockquote($summary);
         } else {
-            $lines[] = '> ' . __('No summary set. Configure in WP LLMS settings.', 'wp-llms');
+            $lines[] = '> ' . __('No summary set. Configure in the llms.txt plugin settings.', 'llms-txt');
         }
         if ($context !== '') {
             $lines[] = '';

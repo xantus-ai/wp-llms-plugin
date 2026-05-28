@@ -37,11 +37,11 @@ final class DuplicateTitle extends AbstractRule {
                 $this->severity(),
                 sprintf(
                     /* translators: %d: number of pages sharing this exact title */
-                    __('The page title "%1$s" is used by %2$d pages on your site.', 'wp-llms'),
+                    __('The page title "%1$s" is used by %2$d pages on your site.', 'llms-txt'),
                     $title,
                     $context->title_count($title)
                 ),
-                __('Make each page title unique. Duplicates prevent AI systems from distinguishing your pages.', 'wp-llms')
+                __('Make each page title unique. Duplicates prevent AI systems from distinguishing your pages.', 'llms-txt')
             );
         }
 
@@ -54,10 +54,10 @@ final class DuplicateTitle extends AbstractRule {
                 $this->severity(),
                 sprintf(
                     /* translators: %s: similar title */
-                    __('Title is very similar to another page: "%s"', 'wp-llms'),
+                    __('Title is very similar to another page: "%s"', 'llms-txt'),
                     $similar
                 ),
-                __('Differentiate the titles to clarify what each page covers.', 'wp-llms')
+                __('Differentiate the titles to clarify what each page covers.', 'llms-txt')
             );
         }
 

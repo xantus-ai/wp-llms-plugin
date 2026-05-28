@@ -136,7 +136,7 @@ final class SectionEditPage {
         .wpllms-sel-remove:hover { color: #a00; }
         </style>
         <div class="wrap">
-            <h1><?php echo $is_new ? esc_html__('Add Section', 'wp-llms') : esc_html__('Edit Section', 'wp-llms'); ?></h1>
+            <h1><?php echo $is_new ? esc_html__('Add Section', 'llms-txt') : esc_html__('Edit Section', 'llms-txt'); ?></h1>
 
             <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
                 <?php wp_nonce_field(self::NONCE_ACTION, self::NONCE_NAME); ?>
@@ -145,47 +145,47 @@ final class SectionEditPage {
 
                 <table class="form-table">
                     <tr>
-                        <th scope="row"><label for="name"><?php esc_html_e('Section name (H2)', 'wp-llms'); ?></label></th>
+                        <th scope="row"><label for="name"><?php esc_html_e('Section name (H2)', 'llms-txt'); ?></label></th>
                         <td>
                             <input type="text" id="name" name="name" value="<?php echo esc_attr((string) $defaults['name']); ?>" class="regular-text" required>
                             <?php if (!empty($errors['name'])) printf('<p class="description" style="color:#b32d2e">%s</p>', esc_html($errors['name'])); ?>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><label for="intro_text"><?php esc_html_e('Intro text', 'wp-llms'); ?></label></th>
+                        <th scope="row"><label for="intro_text"><?php esc_html_e('Intro text', 'llms-txt'); ?></label></th>
                         <td>
                             <textarea id="intro_text" name="intro_text" rows="3" class="large-text"><?php echo esc_textarea((string) $defaults['intro_text']); ?></textarea>
-                            <p class="description"><?php esc_html_e('Optional paragraph that appears under the H2 before the link list.', 'wp-llms'); ?></p>
+                            <p class="description"><?php esc_html_e('Optional paragraph that appears under the H2 before the link list.', 'llms-txt'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php esc_html_e('Optional flag', 'wp-llms'); ?></th>
+                        <th scope="row"><?php esc_html_e('Optional flag', 'llms-txt'); ?></th>
                         <td>
                             <label>
                                 <input type="checkbox" name="is_optional" value="1" <?php checked($defaults['is_optional'], 1); ?>>
-                                <?php esc_html_e('Render under "## Optional" instead of as a top-level section', 'wp-llms'); ?>
+                                <?php esc_html_e('Render under "## Optional" instead of as a top-level section', 'llms-txt'); ?>
                             </label>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><label for="sort_order"><?php esc_html_e('Sort order', 'wp-llms'); ?></label></th>
+                        <th scope="row"><label for="sort_order"><?php esc_html_e('Sort order', 'llms-txt'); ?></label></th>
                         <td>
                             <input type="number" id="sort_order" name="sort_order" value="<?php echo esc_attr((string) $defaults['sort_order']); ?>" class="small-text">
-                            <p class="description"><?php esc_html_e('Lower numbers come first.', 'wp-llms'); ?></p>
+                            <p class="description"><?php esc_html_e('Lower numbers come first.', 'llms-txt'); ?></p>
                         </td>
                     </tr>
                 </table>
 
-                <h2><?php esc_html_e('Inclusion rule', 'wp-llms'); ?></h2>
-                <p><?php esc_html_e('How posts are selected for this section.', 'wp-llms'); ?></p>
+                <h2><?php esc_html_e('Inclusion rule', 'llms-txt'); ?></h2>
+                <p><?php esc_html_e('How posts are selected for this section.', 'llms-txt'); ?></p>
 
                 <table class="form-table">
                     <tr>
-                        <th scope="row"><label for="rule_type"><?php esc_html_e('Rule type', 'wp-llms'); ?></label></th>
+                        <th scope="row"><label for="rule_type"><?php esc_html_e('Rule type', 'llms-txt'); ?></label></th>
                         <td>
                             <select id="rule_type" name="rule_type" onchange="document.getElementById('rule-fields').dataset.type = this.value">
-                                <option value="manual" <?php selected($defaults['rule_type'], 'manual'); ?>><?php esc_html_e('Manual selection', 'wp-llms'); ?></option>
-                                <option value="post_type" <?php selected($defaults['rule_type'], 'post_type'); ?>><?php esc_html_e('All posts of a type', 'wp-llms'); ?></option>
+                                <option value="manual" <?php selected($defaults['rule_type'], 'manual'); ?>><?php esc_html_e('Manual selection', 'llms-txt'); ?></option>
+                                <option value="post_type" <?php selected($defaults['rule_type'], 'post_type'); ?>><?php esc_html_e('All posts of a type', 'llms-txt'); ?></option>
                             </select>
                         </td>
                     </tr>
@@ -194,24 +194,24 @@ final class SectionEditPage {
                 <div id="rule-fields" data-type="<?php echo esc_attr((string) $defaults['rule_type']); ?>">
                     <table class="form-table rule-manual" style="<?php echo $defaults['rule_type'] === 'manual' ? '' : 'display:none'; ?>">
                         <tr>
-                            <th scope="row"><label for="wpllms-post-search"><?php esc_html_e('Select posts', 'wp-llms'); ?></label></th>
+                            <th scope="row"><label for="wpllms-post-search"><?php esc_html_e('Select posts', 'llms-txt'); ?></label></th>
                             <td>
                                 <div id="wpllms-post-picker">
                                     <div style="position:relative; display:inline-block">
-                                        <input type="text" id="wpllms-post-search" class="regular-text" placeholder="<?php esc_attr_e('Type to search by title...', 'wp-llms'); ?>" autocomplete="off">
+                                        <input type="text" id="wpllms-post-search" class="regular-text" placeholder="<?php esc_attr_e('Type to search by title...', 'llms-txt'); ?>" autocomplete="off">
                                         <div id="wpllms-search-results" style="display:none"></div>
                                     </div>
                                     <ul id="wpllms-selected-posts"></ul>
                                     <textarea id="rule_post_ids" name="rule_post_ids" style="display:none"><?php echo esc_textarea((string) $defaults['rule_post_ids']); ?></textarea>
                                 </div>
-                                <p class="description"><?php esc_html_e('Search for posts by title, then click to add them to this section.', 'wp-llms'); ?></p>
+                                <p class="description"><?php esc_html_e('Search for posts by title, then click to add them to this section.', 'llms-txt'); ?></p>
                             </td>
                         </tr>
                     </table>
 
                     <table class="form-table rule-post_type" style="<?php echo $defaults['rule_type'] === 'post_type' ? '' : 'display:none'; ?>">
                         <tr>
-                            <th scope="row"><label for="rule_post_type"><?php esc_html_e('Post type', 'wp-llms'); ?></label></th>
+                            <th scope="row"><label for="rule_post_type"><?php esc_html_e('Post type', 'llms-txt'); ?></label></th>
                             <td>
                                 <select id="rule_post_type" name="rule_post_type">
                                     <?php foreach ($eligible_types as $type_name => $type_label) : ?>
@@ -223,20 +223,20 @@ final class SectionEditPage {
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row"><label for="rule_limit"><?php esc_html_e('Max items', 'wp-llms'); ?></label></th>
+                            <th scope="row"><label for="rule_limit"><?php esc_html_e('Max items', 'llms-txt'); ?></label></th>
                             <td>
                                 <input type="number" id="rule_limit" name="rule_limit" value="<?php echo esc_attr((string) $defaults['rule_limit']); ?>" min="1" max="1000" class="small-text">
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row"><label for="rule_order_by"><?php esc_html_e('Order', 'wp-llms'); ?></label></th>
+                            <th scope="row"><label for="rule_order_by"><?php esc_html_e('Order', 'llms-txt'); ?></label></th>
                             <td>
                                 <select id="rule_order_by" name="rule_order_by">
-                                    <option value="date_desc" <?php selected($defaults['rule_order_by'], 'date_desc'); ?>><?php esc_html_e('Newest first', 'wp-llms'); ?></option>
-                                    <option value="date_asc" <?php selected($defaults['rule_order_by'], 'date_asc'); ?>><?php esc_html_e('Oldest first', 'wp-llms'); ?></option>
-                                    <option value="title_asc" <?php selected($defaults['rule_order_by'], 'title_asc'); ?>><?php esc_html_e('Title A→Z', 'wp-llms'); ?></option>
-                                    <option value="modified_desc" <?php selected($defaults['rule_order_by'], 'modified_desc'); ?>><?php esc_html_e('Recently updated first', 'wp-llms'); ?></option>
-                                    <option value="menu_order" <?php selected($defaults['rule_order_by'], 'menu_order'); ?>><?php esc_html_e('Menu order', 'wp-llms'); ?></option>
+                                    <option value="date_desc" <?php selected($defaults['rule_order_by'], 'date_desc'); ?>><?php esc_html_e('Newest first', 'llms-txt'); ?></option>
+                                    <option value="date_asc" <?php selected($defaults['rule_order_by'], 'date_asc'); ?>><?php esc_html_e('Oldest first', 'llms-txt'); ?></option>
+                                    <option value="title_asc" <?php selected($defaults['rule_order_by'], 'title_asc'); ?>><?php esc_html_e('Title A→Z', 'llms-txt'); ?></option>
+                                    <option value="modified_desc" <?php selected($defaults['rule_order_by'], 'modified_desc'); ?>><?php esc_html_e('Recently updated first', 'llms-txt'); ?></option>
+                                    <option value="menu_order" <?php selected($defaults['rule_order_by'], 'menu_order'); ?>><?php esc_html_e('Menu order', 'llms-txt'); ?></option>
                                 </select>
                             </td>
                         </tr>
@@ -363,8 +363,8 @@ final class SectionEditPage {
                 </script>
 
                 <p class="submit">
-                    <button type="submit" class="button button-primary"><?php echo $is_new ? esc_html__('Create section', 'wp-llms') : esc_html__('Save changes', 'wp-llms'); ?></button>
-                    <a href="<?php echo esc_url(admin_url('admin.php?page=wpllms-sections')); ?>" class="button"><?php esc_html_e('Cancel', 'wp-llms'); ?></a>
+                    <button type="submit" class="button button-primary"><?php echo $is_new ? esc_html__('Create section', 'llms-txt') : esc_html__('Save changes', 'llms-txt'); ?></button>
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=wpllms-sections')); ?>" class="button"><?php esc_html_e('Cancel', 'llms-txt'); ?></a>
                 </p>
             </form>
         </div>
@@ -373,7 +373,7 @@ final class SectionEditPage {
 
     public static function handle_post(): void {
         if (!current_user_can('manage_options')) {
-            wp_die(esc_html__('Insufficient permissions.', 'wp-llms'));
+            wp_die(esc_html__('Insufficient permissions.', 'llms-txt'));
         }
         check_admin_referer(self::NONCE_ACTION, self::NONCE_NAME);
 
@@ -383,7 +383,7 @@ final class SectionEditPage {
         $errors = [];
         $name = trim((string) ($_POST['name'] ?? ''));
         if ($name === '') {
-            $errors['name'] = __('Section name is required.', 'wp-llms');
+            $errors['name'] = __('Section name is required.', 'llms-txt');
         }
 
         if (count($errors) > 0) {

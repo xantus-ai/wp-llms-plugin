@@ -45,8 +45,8 @@ final class BoilerplateIntro extends AbstractRule {
                 $post->ID,
                 $this->key(),
                 $this->severity(),
-                __('The page opens with the site tagline as its first content. AI systems will read this as boilerplate, not unique value.', 'wp-llms'),
-                __('Open with content specific to this page - the topic, the audience, the value.', 'wp-llms')
+                __('The page opens with the site tagline as its first content. AI systems will read this as boilerplate, not unique value.', 'llms-txt'),
+                __('Open with content specific to this page - the topic, the audience, the value.', 'llms-txt')
             );
         }
 
@@ -57,11 +57,11 @@ final class BoilerplateIntro extends AbstractRule {
                 $this->severity(),
                 sprintf(
                     /* translators: %d: number of CTA phrases found */
-                    __('The first %1$d characters contain %2$d call-to-action phrases. AI systems treat sales-pitch openings as low-value content.', 'wp-llms'),
+                    __('The first %1$d characters contain %2$d call-to-action phrases. AI systems treat sales-pitch openings as low-value content.', 'llms-txt'),
                     self::SAMPLE_LENGTH,
                     $cta_hits
                 ),
-                __('Lead with descriptive content. Move CTAs further down the page.', 'wp-llms')
+                __('Lead with descriptive content. Move CTAs further down the page.', 'llms-txt')
             );
         }
 
@@ -70,8 +70,8 @@ final class BoilerplateIntro extends AbstractRule {
                 $post->ID,
                 $this->key(),
                 $this->severity(),
-                __('The page opens with pricing and a call-to-action. AI systems will skip past this looking for descriptive content.', 'wp-llms'),
-                __('Add a descriptive intro before pricing or CTAs.', 'wp-llms')
+                __('The page opens with pricing and a call-to-action. AI systems will skip past this looking for descriptive content.', 'llms-txt'),
+                __('Add a descriptive intro before pricing or CTAs.', 'llms-txt')
             );
         }
 

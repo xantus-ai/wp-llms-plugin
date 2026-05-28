@@ -81,7 +81,7 @@ final class LlmsTxtGenerator {
     }
 
     private function render_optional_block(array $optional_sections): string {
-        $lines = ['## ' . __('Optional', 'wp-llms')];
+        $lines = ['## ' . __('Optional', 'llms-txt')];
 
         $any_rendered = false;
         foreach ($optional_sections as $section) {

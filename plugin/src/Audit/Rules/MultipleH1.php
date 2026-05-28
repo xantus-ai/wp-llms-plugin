@@ -29,10 +29,10 @@ final class MultipleH1 extends AbstractRule {
             $this->severity(),
             sprintf(
                 /* translators: %d: count of h1 headings */
-                __('Found %d <h1> headings on this page. There should be exactly one.', 'wp-llms'),
+                __('Found %d <h1> headings on this page. There should be exactly one.', 'llms-txt'),
                 $count
             ),
-            __('Demote extra H1s to H2 or lower. Multiple H1s confuse AI systems trying to identify the page topic.', 'wp-llms')
+            __('Demote extra H1s to H2 or lower. Multiple H1s confuse AI systems trying to identify the page topic.', 'llms-txt')
         );
     }
 }

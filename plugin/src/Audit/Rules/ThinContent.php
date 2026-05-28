@@ -36,11 +36,11 @@ final class ThinContent extends AbstractRule {
             $this->severity(),
             sprintf(
                 /* translators: %d: word count */
-                __('This page has only %1$d words. Pages with under %2$d words give AI systems little context.', 'wp-llms'),
+                __('This page has only %1$d words. Pages with under %2$d words give AI systems little context.', 'llms-txt'),
                 $words,
                 self::MIN_WORDS
             ),
-            __('Expand the content to clearly explain the topic, who it\'s for, and what action to take.', 'wp-llms')
+            __('Expand the content to clearly explain the topic, who it\'s for, and what action to take.', 'llms-txt')
         );
     }
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# Build a WordPress-ready zip of the WP LLMS plugin.
-# Output: wp-llms.zip in the project root, ready for WP admin upload.
+# Build a WordPress-ready zip of the llms.txt for WordPress plugin.
+# Output: llms-txt.zip in the project root, ready for WP admin upload.
 #
 # Usage:
 #   ./build.sh
@@ -12,8 +12,8 @@ set -euo pipefail
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
 SOURCE_DIR="$PROJECT_ROOT/plugin"
 BUILD_DIR="$PROJECT_ROOT/build"
-STAGE_DIR="$BUILD_DIR/wp-llms"
-OUTPUT_ZIP="$PROJECT_ROOT/wp-llms.zip"
+STAGE_DIR="$BUILD_DIR/llms-txt"
+OUTPUT_ZIP="$PROJECT_ROOT/llms-txt.zip"
 
 # ---- Preflight ----
 
@@ -38,16 +38,16 @@ if [ ! -d "$SOURCE_DIR" ]; then
     exit 1
 fi
 
-VERSION=$(grep -E "^\s*\*\s*Version:" "$SOURCE_DIR/wp-llms.php" \
+VERSION=$(grep -E "^\s*\*\s*Version:" "$SOURCE_DIR/llms-txt.php" \
     | head -1 \
     | sed -E 's/.*Version:[[:space:]]*([0-9.]+).*/\1/')
 
 if [ -z "$VERSION" ]; then
-    echo "Error: could not parse Version from $SOURCE_DIR/wp-llms.php"
+    echo "Error: could not parse Version from $SOURCE_DIR/llms-txt.php"
     exit 1
 fi
 
-echo "Building WP LLMS v$VERSION..."
+echo "Building llms.txt for WordPress v$VERSION..."
 
 # ---- Clean ----
 
@@ -82,7 +82,7 @@ fi
 # ---- Syntax check ----
 
 echo "Verifying PHP syntax..."
-SYNTAX_OUTPUT=$(find "$STAGE_DIR/src" "$STAGE_DIR/wp-llms.php" "$STAGE_DIR/uninstall.php" \
+SYNTAX_OUTPUT=$(find "$STAGE_DIR/src" "$STAGE_DIR/llms-txt.php" "$STAGE_DIR/uninstall.php" \
     -name "*.php" -exec php -l {} \; 2>&1 || true)
 SYNTAX_ERRORS=$(echo "$SYNTAX_OUTPUT" | grep -v "No syntax errors detected" | grep -v "Failed loading" | grep -v "opcache" || true)
 if [ -n "$SYNTAX_ERRORS" ]; then
@@ -94,7 +94,7 @@ fi
 # ---- Build zip ----
 
 echo "Creating zip..."
-( cd "$BUILD_DIR" && zip -rq "$OUTPUT_ZIP" wp-llms )
+( cd "$BUILD_DIR" && zip -rq "$OUTPUT_ZIP" llms-txt )
 
 # ---- Report ----
 
@@ -109,8 +109,8 @@ echo "Size:  $SIZE"
 echo "Files: $FILE_COUNT"
 echo ""
 echo "Inside the zip:"
-echo "  wp-llms/"
-echo "    wp-llms.php"
+echo "  llms-txt/"
+echo "    llms-txt.php"
 echo "    composer.json"
 echo "    readme.txt"
 echo "    uninstall.php"

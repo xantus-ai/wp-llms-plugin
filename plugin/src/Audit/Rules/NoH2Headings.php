@@ -35,10 +35,10 @@ final class NoH2Headings extends AbstractRule {
             $this->severity(),
             sprintf(
                 /* translators: %d: word count */
-                __('This page has %d words but no H2 subheadings. AI systems use heading structure to chunk and understand long content.', 'wp-llms'),
+                __('This page has %d words but no H2 subheadings. AI systems use heading structure to chunk and understand long content.', 'llms-txt'),
                 $words
             ),
-            __('Break the content into sections with descriptive H2 subheadings.', 'wp-llms')
+            __('Break the content into sections with descriptive H2 subheadings.', 'llms-txt')
         );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Uninstall handler for WP LLMS.
+ * Uninstall handler for llms.txt for WordPress.
  *
  * Only runs when the user explicitly deletes the plugin via the WP admin
  * UI - not on simple deactivation. Honors the user's setting for whether

@@ -66,7 +66,7 @@ final class SectionSuggester {
                 ],
                 'preview_count' => 0,
                 'requires_curation' => true,
-                'note' => __('You\'ll need to hand-pick 20-30 evergreen posts in the Sections admin. Auto-including all blog posts would bloat the file.', 'wp-llms'),
+                'note' => __('You\'ll need to hand-pick 20-30 evergreen posts in the Sections admin. Auto-including all blog posts would bloat the file.', 'llms-txt'),
             ];
             $sort_order += 10;
         }

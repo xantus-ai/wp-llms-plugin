@@ -37,8 +37,8 @@ final class GenericH1 extends AbstractRule {
                 $post->ID,
                 $this->key(),
                 $this->severity(),
-                __('The H1 on this page matches your site tagline, which is generic boilerplate.', 'wp-llms'),
-                __('Replace the H1 with text that describes what THIS specific page is about.', 'wp-llms')
+                __('The H1 on this page matches your site tagline, which is generic boilerplate.', 'llms-txt'),
+                __('Replace the H1 with text that describes what THIS specific page is about.', 'llms-txt')
             );
         }
 
@@ -49,11 +49,11 @@ final class GenericH1 extends AbstractRule {
                 $this->severity(),
                 sprintf(
                     /* translators: %d: count of pages sharing this H1 */
-                    __('The H1 "%1$s" appears on %2$d pages across your site. Generic H1s prevent AI systems from differentiating your pages.', 'wp-llms'),
+                    __('The H1 "%1$s" appears on %2$d pages across your site. Generic H1s prevent AI systems from differentiating your pages.', 'llms-txt'),
                     $h1,
                     $context->h1_count($h1)
                 ),
-                __('Make this page\'s H1 unique - describe what is on THIS page.', 'wp-llms')
+                __('Make this page\'s H1 unique - describe what is on THIS page.', 'llms-txt')
             );
         }
 
@@ -68,8 +68,8 @@ final class GenericH1 extends AbstractRule {
                     $post->ID,
                     $this->key(),
                     $this->severity(),
-                    __('The H1 is short and doesn\'t share any keywords with the page title. AI systems may not understand what this page covers.', 'wp-llms'),
-                    __('Use an H1 that includes the key topic of the page.', 'wp-llms')
+                    __('The H1 is short and doesn\'t share any keywords with the page title. AI systems may not understand what this page covers.', 'llms-txt'),
+                    __('Use an H1 that includes the key topic of the page.', 'llms-txt')
                 );
             }
         }

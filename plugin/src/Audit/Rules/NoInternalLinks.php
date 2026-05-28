@@ -58,8 +58,8 @@ final class NoInternalLinks extends AbstractRule {
             $post->ID,
             $this->key(),
             $this->severity(),
-            __('No internal links found in content. Internal links help AI systems understand how pages relate.', 'wp-llms'),
-            __('Link to related pages on your site within the content.', 'wp-llms')
+            __('No internal links found in content. Internal links help AI systems understand how pages relate.', 'llms-txt'),
+            __('Link to related pages on your site within the content.', 'llms-txt')
         );
     }
 }
