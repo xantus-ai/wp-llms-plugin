@@ -3,7 +3,7 @@
  * Plugin Name:       WP LLMS - AI Discoverability for WordPress
  * Plugin URI:        https://wpsear.ch
  * Description:       Make your WordPress site discoverable by AI. Auto-generate llms.txt, audit content for AI-search readiness, generate schema, and track AI bot activity.
- * Version:           0.1.6
+ * Version:           0.1.7
  * Requires at least: 6.0
  * Requires PHP:      8.1
  * Author:            Xantus AI
@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('WPLLMS_VERSION', '0.1.6');
+define('WPLLMS_VERSION', '0.1.7');
 define('WPLLMS_FILE', __FILE__);
 define('WPLLMS_PATH', plugin_dir_path(__FILE__));
 define('WPLLMS_URL', plugin_dir_url(__FILE__));

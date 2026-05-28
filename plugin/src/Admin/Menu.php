@@ -215,10 +215,6 @@ final class Menu {
                         <td><code><?php echo esc_html((string) get_option(Schema::VERSION_OPTION, 'not installed')); ?></code></td>
                     </tr>
                     <tr>
-                        <th><?php esc_html_e('License tier', 'wp-llms'); ?></th>
-                        <td><code><?php echo esc_html((string) Options::get_license()['tier']); ?></code></td>
-                    </tr>
-                    <tr>
                         <th><?php esc_html_e('Setup completed', 'wp-llms'); ?></th>
                         <td><?php echo $setup_done ? esc_html__('Yes', 'wp-llms') : esc_html__('No', 'wp-llms'); ?></td>
                     </tr>

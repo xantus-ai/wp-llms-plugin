@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.7] - 2026-05-28
+
+### Removed
+- "License tier" row on the dashboard. No paid tier exists in the open-source build, so the row promised an upgrade path that wasn't there.
+
 ## [0.1.6] - 2026-05-27
 
 ### Fixed
