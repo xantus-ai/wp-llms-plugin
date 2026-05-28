@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit\Rules;
+namespace WPLlms\Audit\Rules;
 
-use WPSearch\Audit\AuditContext;
-use WPSearch\Audit\AuditIssue;
+use WPLlms\Audit\AuditContext;
+use WPLlms\Audit\AuditIssue;
 use WP_Post;
 
 final class DuplicateTitle extends AbstractRule {
@@ -37,11 +37,11 @@ final class DuplicateTitle extends AbstractRule {
                 $this->severity(),
                 sprintf(
                     /* translators: %d: number of pages sharing this exact title */
-                    __('The page title "%1$s" is used by %2$d pages on your site.', 'wpsearch-ai'),
+                    __('The page title "%1$s" is used by %2$d pages on your site.', 'wp-llms'),
                     $title,
                     $context->title_count($title)
                 ),
-                __('Make each page title unique. Duplicates prevent AI systems from distinguishing your pages.', 'wpsearch-ai')
+                __('Make each page title unique. Duplicates prevent AI systems from distinguishing your pages.', 'wp-llms')
             );
         }
 
@@ -54,10 +54,10 @@ final class DuplicateTitle extends AbstractRule {
                 $this->severity(),
                 sprintf(
                     /* translators: %s: similar title */
-                    __('Title is very similar to another page: "%s"', 'wpsearch-ai'),
+                    __('Title is very similar to another page: "%s"', 'wp-llms'),
                     $similar
                 ),
-                __('Differentiate the titles to clarify what each page covers.', 'wpsearch-ai')
+                __('Differentiate the titles to clarify what each page covers.', 'wp-llms')
             );
         }
 

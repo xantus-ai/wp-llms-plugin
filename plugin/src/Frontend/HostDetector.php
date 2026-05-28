@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Frontend;
+namespace WPLlms\Frontend;
 
 /**
  * Detects the hosting environment so the plugin can apply

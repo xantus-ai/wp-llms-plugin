@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch;
+namespace WPLlms;
 
-use WPSearch\Admin\Menu;
-use WPSearch\Admin\Pages\AuditPage;
-use WPSearch\Admin\Pages\SectionEditPage;
-use WPSearch\Admin\Pages\SectionsPage;
-use WPSearch\Admin\Pages\SettingsPage;
-use WPSearch\Admin\Pages\WizardPage;
-use WPSearch\Audit\Auditor;
-use WPSearch\Audit\IssuesRepository;
-use WPSearch\Cron\Scheduler;
-use WPSearch\Frontend\FileServer;
-use WPSearch\Frontend\HeadInjector;
-use WPSearch\Frontend\PhysicalFileWriter;
-use WPSearch\Frontend\RobotsTxt;
+use WPLlms\Admin\Menu;
+use WPLlms\Admin\Pages\AuditPage;
+use WPLlms\Admin\Pages\SectionEditPage;
+use WPLlms\Admin\Pages\SectionsPage;
+use WPLlms\Admin\Pages\SettingsPage;
+use WPLlms\Admin\Pages\WizardPage;
+use WPLlms\Audit\Auditor;
+use WPLlms\Audit\IssuesRepository;
+use WPLlms\Cron\Scheduler;
+use WPLlms\Frontend\FileServer;
+use WPLlms\Frontend\HeadInjector;
+use WPLlms\Frontend\PhysicalFileWriter;
+use WPLlms\Frontend\RobotsTxt;
 
 final class Plugin {
     private static ?Plugin $instance = null;
@@ -59,7 +59,7 @@ final class Plugin {
         add_action('admin_post_' . AuditPage::FORM_ACTION, [AuditPage::class, 'handle_run']);
         add_action('admin_post_' . SectionsPage::FORM_ACTION, [SectionsPage::class, 'handle_post']);
         add_action('admin_post_' . SectionEditPage::FORM_ACTION, [SectionEditPage::class, 'handle_post']);
-        add_action('wp_ajax_wpsearch_search_posts', [SectionEditPage::class, 'handle_search']);
+        add_action('wp_ajax_wpllms_search_posts', [SectionEditPage::class, 'handle_search']);
         add_action('admin_post_' . SettingsPage::FORM_ACTION, [SettingsPage::class, 'handle_post']);
         add_action('admin_post_' . Menu::REFRESH_REWRITES_ACTION, [Menu::class, 'handle_refresh_rewrites']);
         add_action('admin_post_' . Menu::WRITE_STATIC_ACTION, [Menu::class, 'handle_write_static']);
@@ -113,6 +113,6 @@ final class Plugin {
     }
 
     public function version(): string {
-        return WPSEARCH_VERSION;
+        return WPLLMS_VERSION;
     }
 }

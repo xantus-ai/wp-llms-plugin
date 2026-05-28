@@ -1,6 +1,6 @@
 # Generator Algorithm Specification
 
-**Component:** WPSearch - file generation engine
+**Component:** WP LLMS - file generation engine
 **Status:** Draft for review
 **Last updated:** 2026-05-05
 This document specifies the algorithms that produce `llms.txt`, `llms-full.txt`, and per-page `.md` variants. The plugin works with any WordPress site - Gutenberg, Elementor, Divi, Beaver Builder, classic editor, or no builder at all.
@@ -13,9 +13,9 @@ This document specifies the algorithms that produce `llms.txt`, `llms-full.txt`,
 
 | Source | Used for |
 |---|---|
-| `wpsearch_settings` (option) | H1, summary, context paragraphs, toggles |
-| `wpsearch_sections` (table) | Section names, order, intro text, inclusion rules |
-| `wpsearch_overrides` (table) | Per-post custom title, description, exclusion |
+| `wpllms_settings` (option) | H1, summary, context paragraphs, toggles |
+| `wpllms_sections` (table) | Section names, order, intro text, inclusion rules |
+| `wpllms_overrides` (table) | Per-post custom title, description, exclusion |
 | WP posts (all public types) | Source content |
 | Yoast / RankMath / AIOSEO meta | Description fallback chain |
 | Post excerpts and content | Description and full-text fallback |
@@ -81,7 +81,7 @@ For each post, walk this list in order. **Stop at the first source that returns 
 
 | Priority | Source | Notes |
 |---|---|---|
-| 1 | Manual override (`wpsearch_overrides.custom_description`) | Highest authority - user explicitly set this |
+| 1 | Manual override (`wpllms_overrides.custom_description`) | Highest authority - user explicitly set this |
 | 2 | AI-generated override (Pro tier, stored as override with flag) | Distinguishable in UI but treated same as manual |
 | 3 | Yoast meta description (`_yoast_wpseo_metadesc`) | Most common SEO plugin |
 | 4 | RankMath description (`rank_math_description`) | Second most common |
@@ -126,7 +126,7 @@ Simpler than descriptions, but with the same override-first pattern:
 
 | Priority | Source |
 |---|---|
-| 1 | Manual override (`wpsearch_overrides.custom_title`) |
+| 1 | Manual override (`wpllms_overrides.custom_title`) |
 | 2 | Yoast SEO title (`_yoast_wpseo_title`), templated and resolved |
 | 3 | Post title (`get_the_title()`) |
 
@@ -272,7 +272,7 @@ After markdown conversion:
 ### Caching
 
 The output of stages 1–6 is expensive (runs full WP filters). Cache per-post:
-- Key: `wpsearch_extracted_{post_id}_{post_modified_gmt_timestamp}`
+- Key: `wpllms_extracted_{post_id}_{post_modified_gmt_timestamp}`
 - TTL: 24 hours
 - Storage: object cache (transient)
 - Invalidation: automatic via timestamp in key
@@ -283,7 +283,7 @@ The output of stages 1–6 is expensive (runs full WP filters). Cache per-post:
 
 ### Inclusion rules
 
-Each section in `wpsearch_sections` has an `inclusion_rule_json` field. The rule is one of:
+Each section in `wpllms_sections` has an `inclusion_rule_json` field. The rule is one of:
 
 ```json
 // Manual list
@@ -300,7 +300,7 @@ Each section in `wpsearch_sections` has an `inclusion_rule_json` field. The rule
   "type": "query",
   "post_type": "post",
   "tax_query": [{"taxonomy": "category", "term_ids": [5]}],
-  "meta_query": [{"key": "_wpsearch_featured", "value": "1"}],
+  "meta_query": [{"key": "_wpllms_featured", "value": "1"}],
   "limit": 30,
   "order_by": "date_desc"
 }
@@ -309,8 +309,8 @@ Each section in `wpsearch_sections` has an `inclusion_rule_json` field. The rule
 Resolution function returns an ordered list of WP_Post objects, deduped, then filtered through:
 1. Status check: only `publish`
 2. Visibility: drop `password` protected, drop `noindex` (Yoast/RankMath flag)
-3. Override exclusion: drop posts with `wpsearch_overrides.is_excluded = 1` for this section
-4. Override sort: apply `wpsearch_overrides.sort_order` (defaults to query order)
+3. Override exclusion: drop posts with `wpllms_overrides.is_excluded = 1` for this section
+4. Override sort: apply `wpllms_overrides.sort_order` (defaults to query order)
 
 ### Rendering a section
 
@@ -384,12 +384,12 @@ Don't write `llms.txt` and `llms-full.txt` as physical files. Instead:
 
 1. Register rewrite rules at `init`:
    ```
-   ^llms\.txt$           → index.php?wpsearch_file=llms
-   ^llms-full\.txt$      → index.php?wpsearch_file=full
-   ^([^/]+)\.md$         → index.php?wpsearch_md_slug=$matches[1]
+   ^llms\.txt$           → index.php?wpllms_file=llms
+   ^llms-full\.txt$      → index.php?wpllms_file=full
+   ^([^/]+)\.md$         → index.php?wpllms_md_slug=$matches[1]
    ```
-2. Hook `template_redirect`. If `wpsearch_file` query var present, render and `exit`.
-3. Cache the rendered output in a transient (`wpsearch_llms_txt_cache`) keyed by a hash of all relevant inputs.
+2. Hook `template_redirect`. If `wpllms_file` query var present, render and `exit`.
+3. Cache the rendered output in a transient (`wpllms_llms_txt_cache`) keyed by a hash of all relevant inputs.
 
 **Why not write files:**
 - WP filesystem permissions are unreliable across hosts
@@ -488,12 +488,12 @@ Same selection logic as `llms.txt`. For each included post:
 | Section CRUD in admin | Set dirty + immediate regen |
 | Setting change | Set dirty + immediate regen |
 | Manual "Regenerate now" button | Immediate regen, ignore dirty flag |
-| Daily cron `wpsearch_daily_regen` | Regen if dirty flag set |
+| Daily cron `wpllms_daily_regen` | Regen if dirty flag set |
 | License tier change | Set dirty (Pro features may add/change content) |
 
 ### Dirty flag
 
-Single option `wpsearch_dirty` with shape:
+Single option `wpllms_dirty` with shape:
 ```php
 ['llms_txt' => 1715000000, 'llms_full' => 1715000000]
 ```
@@ -506,8 +506,8 @@ Don't regenerate inline on `save_post`. Schedule a one-off cron event for ~30 se
 
 ```php
 function queue_regen(string $which): void {
-    if (!wp_next_scheduled('wpsearch_regen_' . $which)) {
-        wp_schedule_single_event(time() + 30, 'wpsearch_regen_' . $which);
+    if (!wp_next_scheduled('wpllms_regen_' . $which)) {
+        wp_schedule_single_event(time() + 30, 'wpllms_regen_' . $which);
     }
 }
 ```
@@ -540,7 +540,7 @@ function queue_regen(string $which): void {
 
 ### Custom post types from themes/plugins
 - All publicly queryable post types are available as inclusion rule options.
-- We expose a filter `wpsearch_eligible_post_types` for site-specific overrides.
+- We expose a filter `wpllms_eligible_post_types` for site-specific overrides.
 
 ### Posts with shortcodes that emit forms
 - Stripped during extraction (Stage 4). Forms are not useful in llms.txt.
@@ -679,7 +679,7 @@ That walkthrough becomes the test fixture for Phase 1 development.
 - **Site H1** - pre-filled with `get_bloginfo('name')`, editable
 - **Summary** (blockquote) - required, 1–3 sentences, character counter, examples shown
 - **Context paragraphs** - optional, free text with markdown allowed
-- *(Pro tier inline upsell: "Let WPSearch analyze your site and write this for you - Powered by Xantus AI" - runs the brand voice trainer if Pro license is active)*
+- *(Pro tier inline upsell: "Let WP LLMS analyze your site and write this for you - Powered by Xantus AI" - runs the brand voice trainer if Pro license is active)*
 
 ### Step 2: Site detection
 

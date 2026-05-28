@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Storage;
+namespace WPLlms\Storage;
 
 final class Schema {
     public const VERSION = '1';
-    public const VERSION_OPTION = 'wpsearch_schema_version';
+    public const VERSION_OPTION = 'wpllms_schema_version';
 
     public static function install(): void {
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -23,7 +23,7 @@ final class Schema {
 
     public static function table_name(string $name): string {
         global $wpdb;
-        return $wpdb->prefix . 'wpsearch_' . $name;
+        return $wpdb->prefix . 'wpllms_' . $name;
     }
 
     private static function sections_sql(string $charset): string {

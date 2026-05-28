@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit\Rules;
+namespace WPLlms\Audit\Rules;
 
-use WPSearch\Audit\AuditContext;
-use WPSearch\Audit\AuditIssue;
+use WPLlms\Audit\AuditContext;
+use WPLlms\Audit\AuditIssue;
 use WP_Post;
 
 final class ThinMeta extends AbstractRule {
@@ -26,8 +26,8 @@ final class ThinMeta extends AbstractRule {
                 $post->ID,
                 $this->key(),
                 $this->severity(),
-                __('No meta description set. AI systems will fall back to extracting from page content, which is less reliable.', 'wpsearch-ai'),
-                __('Add a meta description in your SEO plugin (Yoast, RankMath, etc.) of 70-160 characters that describes the page.', 'wpsearch-ai')
+                __('No meta description set. AI systems will fall back to extracting from page content, which is less reliable.', 'wp-llms'),
+                __('Add a meta description in your SEO plugin (Yoast, RankMath, etc.) of 70-160 characters that describes the page.', 'wp-llms')
             );
         }
 
@@ -38,10 +38,10 @@ final class ThinMeta extends AbstractRule {
                 $this->severity(),
                 sprintf(
                     /* translators: %d: character count */
-                    __('Meta description is only %d characters. Aim for 70-160 characters for full context.', 'wpsearch-ai'),
+                    __('Meta description is only %d characters. Aim for 70-160 characters for full context.', 'wp-llms'),
                     mb_strlen($meta)
                 ),
-                __('Expand the meta description to give AI systems a clearer summary of the page.', 'wpsearch-ai')
+                __('Expand the meta description to give AI systems a clearer summary of the page.', 'wp-llms')
             );
         }
 

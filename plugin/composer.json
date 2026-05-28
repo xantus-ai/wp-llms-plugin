@@ -1,9 +1,9 @@
 {
-    "name": "xantus/wpsearch",
-    "description": "WPSearch - AI Search Optimization for WordPress. Auto-generate llms.txt, audit content for AI-search readiness, generate schema, and track AI bot activity.",
+    "name": "xantus/wpllms",
+    "description": "WP LLMS - AI Discoverability for WordPress. Auto-generate llms.txt, audit content for AI-search readiness, generate schema, and track AI bot activity.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
-    "homepage": "https://wpsear.ch",
+    "homepage": "https://xant.us",
     "authors": [
         {
             "name": "Xantus AI",
@@ -22,12 +22,12 @@
     },
     "autoload": {
         "psr-4": {
-            "WPSearch\\": "src/"
+            "WPLlms\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "WPSearch\\Tests\\": "tests/"
+            "WPLlms\\Tests\\": "tests/"
         }
     },
     "config": {

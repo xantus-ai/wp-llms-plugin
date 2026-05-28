@@ -1,4 +1,4 @@
-=== WPSearch - AI Search Optimization for WordPress ===
+=== WP LLMS - AI Discoverability for WordPress ===
 Contributors: xantusai
 Tags: llms.txt, ai search, seo, ai seo, llms, chatgpt, claude, perplexity, ai discoverability, schema
 Requires at least: 6.0
@@ -12,9 +12,9 @@ Make your WordPress site discoverable by AI. Auto-generate llms.txt, audit conte
 
 == Description ==
 
-AI-powered search (ChatGPT, Claude, Perplexity, Google AI Overviews) is rapidly becoming a primary discovery channel. WPSearch helps your WordPress site get surfaced and recommended by these systems.
+AI-powered search (ChatGPT, Claude, Perplexity, Google AI Overviews) is rapidly becoming a primary discovery channel. WP LLMS helps your WordPress site get surfaced and recommended by these systems.
 
-**What WPSearch does:**
+**What WP LLMS does:**
 
 * Auto-generates `llms.txt` and `llms-full.txt` from your WordPress content, regenerates on every publish
 * Per-page `.md` variants of your most important pages
@@ -35,9 +35,9 @@ AI-powered search (ChatGPT, Claude, Perplexity, Google AI Overviews) is rapidly 
 
 == Installation ==
 
-1. Upload the plugin to `/wp-content/plugins/wpsearch-ai`
+1. Upload the plugin to `/wp-content/plugins/wp-llms`
 2. Activate through the WordPress 'Plugins' menu
-3. Run the setup wizard from the WPSearch admin menu
+3. Run the setup wizard from the WP LLMS admin menu
 4. Visit `/llms.txt` on your site to verify generation
 
 == Frequently Asked Questions ==
@@ -52,11 +52,11 @@ No. The free tier is fully functional with no account required. Pro features req
 
 = Will this conflict with Yoast SEO or RankMath? =
 
-No. WPSearch reads from these plugins (using their meta descriptions when set) and complements them. We focus on AI-search; they focus on traditional search.
+No. WP LLMS reads from these plugins (using their meta descriptions when set) and complements them. We focus on AI-search; they focus on traditional search.
 
 = Does it work with Elementor / page builders? =
 
-Yes. WPSearch has a content extraction pipeline specifically designed to handle Elementor-built pages and other builder-heavy markup.
+Yes. WP LLMS has a content extraction pipeline specifically designed to handle Elementor-built pages and other builder-heavy markup.
 
 == Changelog ==
 

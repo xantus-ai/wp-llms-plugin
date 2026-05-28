@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Admin\Pages;
+namespace WPLlms\Admin\Pages;
 
-use WPSearch\Frontend\FileServer;
-use WPSearch\Plugin;
-use WPSearch\Storage\SectionsRepository;
+use WPLlms\Frontend\FileServer;
+use WPLlms\Plugin;
+use WPLlms\Storage\SectionsRepository;
 
 /**
  * Add/edit form for a single section. Single page handles both via ?id= param.
  */
 final class SectionEditPage {
-    public const PAGE_SLUG = 'wpsearch-section-edit';
-    public const FORM_ACTION = 'wpsearch_section_save';
-    public const NONCE_ACTION = 'wpsearch_section_save';
-    public const NONCE_NAME = 'wpsearch_section_save_nonce';
+    public const PAGE_SLUG = 'wpllms-section-edit';
+    public const FORM_ACTION = 'wpllms_section_save';
+    public const NONCE_ACTION = 'wpllms_section_save';
+    public const NONCE_NAME = 'wpllms_section_save_nonce';
 
     public static function render(): void {
         $repo = new SectionsRepository();
@@ -78,11 +78,11 @@ final class SectionEditPage {
                 }
             }
         }
-        $search_nonce = wp_create_nonce('wpsearch_post_search');
+        $search_nonce = wp_create_nonce('wpllms_post_search');
 
         ?>
         <style>
-        #wpsearch-search-results {
+        #wpllms-search-results {
             position: absolute;
             z-index: 100;
             background: #fff;
@@ -93,22 +93,22 @@ final class SectionEditPage {
             width: 25em;
             margin-top: -1px;
         }
-        .wpsearch-sr-item {
+        .wpllms-sr-item {
             padding: 8px 12px;
             cursor: pointer;
             border-bottom: 1px solid #f0f0f1;
         }
-        .wpsearch-sr-item:last-child { border-bottom: none; }
-        .wpsearch-sr-item:hover { background: #2271b1; color: #fff; }
-        .wpsearch-sr-item:hover small { color: rgba(255,255,255,.7); }
-        .wpsearch-sr-msg { padding: 8px 12px; color: #50575e; }
-        #wpsearch-selected-posts {
+        .wpllms-sr-item:last-child { border-bottom: none; }
+        .wpllms-sr-item:hover { background: #2271b1; color: #fff; }
+        .wpllms-sr-item:hover small { color: rgba(255,255,255,.7); }
+        .wpllms-sr-msg { padding: 8px 12px; color: #50575e; }
+        #wpllms-selected-posts {
             list-style: none;
             padding: 0;
             margin: 8px 0 0;
             max-width: 40em;
         }
-        #wpsearch-selected-posts li {
+        #wpllms-selected-posts li {
             display: flex;
             align-items: center;
             padding: 6px 10px;
@@ -117,13 +117,13 @@ final class SectionEditPage {
             border: 1px solid #dcdcde;
             border-radius: 4px;
         }
-        .wpsearch-sel-title { font-weight: 500; }
-        .wpsearch-sel-meta {
+        .wpllms-sel-title { font-weight: 500; }
+        .wpllms-sel-meta {
             color: #50575e;
             font-size: 12px;
             margin-left: 8px;
         }
-        .wpsearch-sel-remove {
+        .wpllms-sel-remove {
             margin-left: auto;
             color: #b32d2e;
             cursor: pointer;
@@ -133,10 +133,10 @@ final class SectionEditPage {
             line-height: 1;
             padding: 0 4px;
         }
-        .wpsearch-sel-remove:hover { color: #a00; }
+        .wpllms-sel-remove:hover { color: #a00; }
         </style>
         <div class="wrap">
-            <h1><?php echo $is_new ? esc_html__('Add Section', 'wpsearch-ai') : esc_html__('Edit Section', 'wpsearch-ai'); ?></h1>
+            <h1><?php echo $is_new ? esc_html__('Add Section', 'wp-llms') : esc_html__('Edit Section', 'wp-llms'); ?></h1>
 
             <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
                 <?php wp_nonce_field(self::NONCE_ACTION, self::NONCE_NAME); ?>
@@ -145,47 +145,47 @@ final class SectionEditPage {
 
                 <table class="form-table">
                     <tr>
-                        <th scope="row"><label for="name"><?php esc_html_e('Section name (H2)', 'wpsearch-ai'); ?></label></th>
+                        <th scope="row"><label for="name"><?php esc_html_e('Section name (H2)', 'wp-llms'); ?></label></th>
                         <td>
                             <input type="text" id="name" name="name" value="<?php echo esc_attr((string) $defaults['name']); ?>" class="regular-text" required>
                             <?php if (!empty($errors['name'])) printf('<p class="description" style="color:#b32d2e">%s</p>', esc_html($errors['name'])); ?>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><label for="intro_text"><?php esc_html_e('Intro text', 'wpsearch-ai'); ?></label></th>
+                        <th scope="row"><label for="intro_text"><?php esc_html_e('Intro text', 'wp-llms'); ?></label></th>
                         <td>
                             <textarea id="intro_text" name="intro_text" rows="3" class="large-text"><?php echo esc_textarea((string) $defaults['intro_text']); ?></textarea>
-                            <p class="description"><?php esc_html_e('Optional paragraph that appears under the H2 before the link list.', 'wpsearch-ai'); ?></p>
+                            <p class="description"><?php esc_html_e('Optional paragraph that appears under the H2 before the link list.', 'wp-llms'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php esc_html_e('Optional flag', 'wpsearch-ai'); ?></th>
+                        <th scope="row"><?php esc_html_e('Optional flag', 'wp-llms'); ?></th>
                         <td>
                             <label>
                                 <input type="checkbox" name="is_optional" value="1" <?php checked($defaults['is_optional'], 1); ?>>
-                                <?php esc_html_e('Render under "## Optional" instead of as a top-level section', 'wpsearch-ai'); ?>
+                                <?php esc_html_e('Render under "## Optional" instead of as a top-level section', 'wp-llms'); ?>
                             </label>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><label for="sort_order"><?php esc_html_e('Sort order', 'wpsearch-ai'); ?></label></th>
+                        <th scope="row"><label for="sort_order"><?php esc_html_e('Sort order', 'wp-llms'); ?></label></th>
                         <td>
                             <input type="number" id="sort_order" name="sort_order" value="<?php echo esc_attr((string) $defaults['sort_order']); ?>" class="small-text">
-                            <p class="description"><?php esc_html_e('Lower numbers come first.', 'wpsearch-ai'); ?></p>
+                            <p class="description"><?php esc_html_e('Lower numbers come first.', 'wp-llms'); ?></p>
                         </td>
                     </tr>
                 </table>
 
-                <h2><?php esc_html_e('Inclusion rule', 'wpsearch-ai'); ?></h2>
-                <p><?php esc_html_e('How posts are selected for this section.', 'wpsearch-ai'); ?></p>
+                <h2><?php esc_html_e('Inclusion rule', 'wp-llms'); ?></h2>
+                <p><?php esc_html_e('How posts are selected for this section.', 'wp-llms'); ?></p>
 
                 <table class="form-table">
                     <tr>
-                        <th scope="row"><label for="rule_type"><?php esc_html_e('Rule type', 'wpsearch-ai'); ?></label></th>
+                        <th scope="row"><label for="rule_type"><?php esc_html_e('Rule type', 'wp-llms'); ?></label></th>
                         <td>
                             <select id="rule_type" name="rule_type" onchange="document.getElementById('rule-fields').dataset.type = this.value">
-                                <option value="manual" <?php selected($defaults['rule_type'], 'manual'); ?>><?php esc_html_e('Manual selection', 'wpsearch-ai'); ?></option>
-                                <option value="post_type" <?php selected($defaults['rule_type'], 'post_type'); ?>><?php esc_html_e('All posts of a type', 'wpsearch-ai'); ?></option>
+                                <option value="manual" <?php selected($defaults['rule_type'], 'manual'); ?>><?php esc_html_e('Manual selection', 'wp-llms'); ?></option>
+                                <option value="post_type" <?php selected($defaults['rule_type'], 'post_type'); ?>><?php esc_html_e('All posts of a type', 'wp-llms'); ?></option>
                             </select>
                         </td>
                     </tr>
@@ -194,24 +194,24 @@ final class SectionEditPage {
                 <div id="rule-fields" data-type="<?php echo esc_attr((string) $defaults['rule_type']); ?>">
                     <table class="form-table rule-manual" style="<?php echo $defaults['rule_type'] === 'manual' ? '' : 'display:none'; ?>">
                         <tr>
-                            <th scope="row"><label for="wpsearch-post-search"><?php esc_html_e('Select posts', 'wpsearch-ai'); ?></label></th>
+                            <th scope="row"><label for="wpllms-post-search"><?php esc_html_e('Select posts', 'wp-llms'); ?></label></th>
                             <td>
-                                <div id="wpsearch-post-picker">
+                                <div id="wpllms-post-picker">
                                     <div style="position:relative; display:inline-block">
-                                        <input type="text" id="wpsearch-post-search" class="regular-text" placeholder="<?php esc_attr_e('Type to search by title...', 'wpsearch-ai'); ?>" autocomplete="off">
-                                        <div id="wpsearch-search-results" style="display:none"></div>
+                                        <input type="text" id="wpllms-post-search" class="regular-text" placeholder="<?php esc_attr_e('Type to search by title...', 'wp-llms'); ?>" autocomplete="off">
+                                        <div id="wpllms-search-results" style="display:none"></div>
                                     </div>
-                                    <ul id="wpsearch-selected-posts"></ul>
+                                    <ul id="wpllms-selected-posts"></ul>
                                     <textarea id="rule_post_ids" name="rule_post_ids" style="display:none"><?php echo esc_textarea((string) $defaults['rule_post_ids']); ?></textarea>
                                 </div>
-                                <p class="description"><?php esc_html_e('Search for posts by title, then click to add them to this section.', 'wpsearch-ai'); ?></p>
+                                <p class="description"><?php esc_html_e('Search for posts by title, then click to add them to this section.', 'wp-llms'); ?></p>
                             </td>
                         </tr>
                     </table>
 
                     <table class="form-table rule-post_type" style="<?php echo $defaults['rule_type'] === 'post_type' ? '' : 'display:none'; ?>">
                         <tr>
-                            <th scope="row"><label for="rule_post_type"><?php esc_html_e('Post type', 'wpsearch-ai'); ?></label></th>
+                            <th scope="row"><label for="rule_post_type"><?php esc_html_e('Post type', 'wp-llms'); ?></label></th>
                             <td>
                                 <select id="rule_post_type" name="rule_post_type">
                                     <?php foreach ($eligible_types as $type_name => $type_label) : ?>
@@ -223,20 +223,20 @@ final class SectionEditPage {
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row"><label for="rule_limit"><?php esc_html_e('Max items', 'wpsearch-ai'); ?></label></th>
+                            <th scope="row"><label for="rule_limit"><?php esc_html_e('Max items', 'wp-llms'); ?></label></th>
                             <td>
                                 <input type="number" id="rule_limit" name="rule_limit" value="<?php echo esc_attr((string) $defaults['rule_limit']); ?>" min="1" max="1000" class="small-text">
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row"><label for="rule_order_by"><?php esc_html_e('Order', 'wpsearch-ai'); ?></label></th>
+                            <th scope="row"><label for="rule_order_by"><?php esc_html_e('Order', 'wp-llms'); ?></label></th>
                             <td>
                                 <select id="rule_order_by" name="rule_order_by">
-                                    <option value="date_desc" <?php selected($defaults['rule_order_by'], 'date_desc'); ?>><?php esc_html_e('Newest first', 'wpsearch-ai'); ?></option>
-                                    <option value="date_asc" <?php selected($defaults['rule_order_by'], 'date_asc'); ?>><?php esc_html_e('Oldest first', 'wpsearch-ai'); ?></option>
-                                    <option value="title_asc" <?php selected($defaults['rule_order_by'], 'title_asc'); ?>><?php esc_html_e('Title A→Z', 'wpsearch-ai'); ?></option>
-                                    <option value="modified_desc" <?php selected($defaults['rule_order_by'], 'modified_desc'); ?>><?php esc_html_e('Recently updated first', 'wpsearch-ai'); ?></option>
-                                    <option value="menu_order" <?php selected($defaults['rule_order_by'], 'menu_order'); ?>><?php esc_html_e('Menu order', 'wpsearch-ai'); ?></option>
+                                    <option value="date_desc" <?php selected($defaults['rule_order_by'], 'date_desc'); ?>><?php esc_html_e('Newest first', 'wp-llms'); ?></option>
+                                    <option value="date_asc" <?php selected($defaults['rule_order_by'], 'date_asc'); ?>><?php esc_html_e('Oldest first', 'wp-llms'); ?></option>
+                                    <option value="title_asc" <?php selected($defaults['rule_order_by'], 'title_asc'); ?>><?php esc_html_e('Title A→Z', 'wp-llms'); ?></option>
+                                    <option value="modified_desc" <?php selected($defaults['rule_order_by'], 'modified_desc'); ?>><?php esc_html_e('Recently updated first', 'wp-llms'); ?></option>
+                                    <option value="menu_order" <?php selected($defaults['rule_order_by'], 'menu_order'); ?>><?php esc_html_e('Menu order', 'wp-llms'); ?></option>
                                 </select>
                             </td>
                         </tr>
@@ -251,10 +251,10 @@ final class SectionEditPage {
                         if (match) match.style.display = '';
                     });
 
-                    var searchInput = document.getElementById('wpsearch-post-search');
+                    var searchInput = document.getElementById('wpllms-post-search');
                     if (!searchInput) return;
-                    var resultsBox = document.getElementById('wpsearch-search-results');
-                    var selectedList = document.getElementById('wpsearch-selected-posts');
+                    var resultsBox = document.getElementById('wpllms-search-results');
+                    var selectedList = document.getElementById('wpllms-selected-posts');
                     var hiddenField = document.getElementById('rule_post_ids');
                     var nonce = <?php echo wp_json_encode($search_nonce); ?>;
                     var ajaxUrl = <?php echo wp_json_encode(admin_url('admin-ajax.php')); ?>;
@@ -277,9 +277,9 @@ final class SectionEditPage {
                         selected.forEach(function(post, idx) {
                             var li = document.createElement('li');
                             li.innerHTML =
-                                '<span class="wpsearch-sel-title">' + escHtml(post.title) + '</span>' +
-                                '<span class="wpsearch-sel-meta">' + escHtml(post.type) + ' #' + post.id + '</span>' +
-                                '<button type="button" class="wpsearch-sel-remove" data-idx="' + idx + '" title="Remove">&times;</button>';
+                                '<span class="wpllms-sel-title">' + escHtml(post.title) + '</span>' +
+                                '<span class="wpllms-sel-meta">' + escHtml(post.type) + ' #' + post.id + '</span>' +
+                                '<button type="button" class="wpllms-sel-remove" data-idx="' + idx + '" title="Remove">&times;</button>';
                             selectedList.appendChild(li);
                         });
                         syncHidden();
@@ -295,27 +295,27 @@ final class SectionEditPage {
                             resultsBox.style.display = 'none';
                             return;
                         }
-                        resultsBox.innerHTML = '<div class="wpsearch-sr-msg">Searching&hellip;</div>';
+                        resultsBox.innerHTML = '<div class="wpllms-sr-msg">Searching&hellip;</div>';
                         resultsBox.style.display = 'block';
-                        fetch(ajaxUrl + '?action=wpsearch_search_posts&nonce=' + encodeURIComponent(nonce) + '&term=' + encodeURIComponent(term))
+                        fetch(ajaxUrl + '?action=wpllms_search_posts&nonce=' + encodeURIComponent(nonce) + '&term=' + encodeURIComponent(term))
                             .then(function(r) { return r.json(); })
                             .then(function(data) {
                                 if (!data.success || !data.data.length) {
-                                    resultsBox.innerHTML = '<div class="wpsearch-sr-msg">No results found.</div>';
+                                    resultsBox.innerHTML = '<div class="wpllms-sr-msg">No results found.</div>';
                                     return;
                                 }
                                 lastResults = data.data;
                                 var html = '';
                                 data.data.forEach(function(post) {
                                     if (isSelected(post.id)) return;
-                                    html += '<div class="wpsearch-sr-item" data-id="' + post.id + '">' +
+                                    html += '<div class="wpllms-sr-item" data-id="' + post.id + '">' +
                                         escHtml(post.title) +
                                         ' <small>(' + escHtml(post.type) + ' #' + post.id + ')</small></div>';
                                 });
-                                resultsBox.innerHTML = html || '<div class="wpsearch-sr-msg">All matches already selected.</div>';
+                                resultsBox.innerHTML = html || '<div class="wpllms-sr-msg">All matches already selected.</div>';
                             })
                             .catch(function() {
-                                resultsBox.innerHTML = '<div class="wpsearch-sr-msg">Search failed. Please try again.</div>';
+                                resultsBox.innerHTML = '<div class="wpllms-sr-msg">Search failed. Please try again.</div>';
                             });
                     }
 
@@ -325,7 +325,7 @@ final class SectionEditPage {
                     });
 
                     resultsBox.addEventListener('click', function(e) {
-                        var item = e.target.closest('.wpsearch-sr-item');
+                        var item = e.target.closest('.wpllms-sr-item');
                         if (!item) return;
                         var id = parseInt(item.dataset.id, 10);
                         var post = lastResults.find(function(p) { return p.id === id; });
@@ -333,21 +333,21 @@ final class SectionEditPage {
                             selected.push({ id: post.id, title: post.title, type: post.type });
                             renderSelected();
                             item.remove();
-                            if (!resultsBox.querySelector('.wpsearch-sr-item')) {
-                                resultsBox.innerHTML = '<div class="wpsearch-sr-msg">All matches already selected.</div>';
+                            if (!resultsBox.querySelector('.wpllms-sr-item')) {
+                                resultsBox.innerHTML = '<div class="wpllms-sr-msg">All matches already selected.</div>';
                             }
                         }
                     });
 
                     selectedList.addEventListener('click', function(e) {
-                        var btn = e.target.closest('.wpsearch-sel-remove');
+                        var btn = e.target.closest('.wpllms-sel-remove');
                         if (!btn) return;
                         selected.splice(parseInt(btn.dataset.idx, 10), 1);
                         renderSelected();
                     });
 
                     document.addEventListener('click', function(e) {
-                        if (!e.target.closest('#wpsearch-post-picker')) {
+                        if (!e.target.closest('#wpllms-post-picker')) {
                             resultsBox.style.display = 'none';
                         }
                     });
@@ -363,8 +363,8 @@ final class SectionEditPage {
                 </script>
 
                 <p class="submit">
-                    <button type="submit" class="button button-primary"><?php echo $is_new ? esc_html__('Create section', 'wpsearch-ai') : esc_html__('Save changes', 'wpsearch-ai'); ?></button>
-                    <a href="<?php echo esc_url(admin_url('admin.php?page=wpsearch-sections')); ?>" class="button"><?php esc_html_e('Cancel', 'wpsearch-ai'); ?></a>
+                    <button type="submit" class="button button-primary"><?php echo $is_new ? esc_html__('Create section', 'wp-llms') : esc_html__('Save changes', 'wp-llms'); ?></button>
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=wpllms-sections')); ?>" class="button"><?php esc_html_e('Cancel', 'wp-llms'); ?></a>
                 </p>
             </form>
         </div>
@@ -373,7 +373,7 @@ final class SectionEditPage {
 
     public static function handle_post(): void {
         if (!current_user_can('manage_options')) {
-            wp_die(esc_html__('Insufficient permissions.', 'wpsearch-ai'));
+            wp_die(esc_html__('Insufficient permissions.', 'wp-llms'));
         }
         check_admin_referer(self::NONCE_ACTION, self::NONCE_NAME);
 
@@ -383,11 +383,11 @@ final class SectionEditPage {
         $errors = [];
         $name = trim((string) ($_POST['name'] ?? ''));
         if ($name === '') {
-            $errors['name'] = __('Section name is required.', 'wpsearch-ai');
+            $errors['name'] = __('Section name is required.', 'wp-llms');
         }
 
         if (count($errors) > 0) {
-            set_transient('wpsearch_section_errors', $errors, 60);
+            set_transient('wpllms_section_errors', $errors, 60);
             $back = admin_url('admin.php?page=' . self::PAGE_SLUG);
             if ($id > 0) $back = add_query_arg('id', (string) $id, $back);
             wp_safe_redirect($back);
@@ -414,12 +414,12 @@ final class SectionEditPage {
         FileServer::invalidate_cache();
         Plugin::maybe_write_static_files();
 
-        wp_safe_redirect(add_query_arg('saved', '1', admin_url('admin.php?page=wpsearch-sections')));
+        wp_safe_redirect(add_query_arg('saved', '1', admin_url('admin.php?page=wpllms-sections')));
         exit;
     }
 
     public static function handle_search(): void {
-        check_ajax_referer('wpsearch_post_search', 'nonce');
+        check_ajax_referer('wpllms_post_search', 'nonce');
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Insufficient permissions.', 403);
         }
@@ -473,8 +473,8 @@ final class SectionEditPage {
     }
 
     private static function pop_errors(): array {
-        $errors = get_transient('wpsearch_section_errors');
-        delete_transient('wpsearch_section_errors');
+        $errors = get_transient('wpllms_section_errors');
+        delete_transient('wpllms_section_errors');
         return is_array($errors) ? $errors : [];
     }
 

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Generator;
+namespace WPLlms\Generator;
 
-use WPSearch\Storage\SectionsRepository;
+use WPLlms\Storage\SectionsRepository;
 use WP_Post;
 
 /**
@@ -81,7 +81,7 @@ final class LlmsTxtGenerator {
     }
 
     private function render_optional_block(array $optional_sections): string {
-        $lines = ['## ' . __('Optional', 'wpsearch-ai')];
+        $lines = ['## ' . __('Optional', 'wp-llms')];
 
         $any_rendered = false;
         foreach ($optional_sections as $section) {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Setup;
+namespace WPLlms\Setup;
 
 /**
  * Inspects the WordPress installation and returns a structured report

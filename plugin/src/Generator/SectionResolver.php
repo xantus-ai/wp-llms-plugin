@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Generator;
+namespace WPLlms\Generator;
 
-use WPSearch\Storage\OverridesRepository;
+use WPLlms\Storage\OverridesRepository;
 use WP_Post;
 use WP_Query;
 

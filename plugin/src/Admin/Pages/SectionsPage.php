@@ -1,49 +1,49 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Admin\Pages;
+namespace WPLlms\Admin\Pages;
 
-use WPSearch\Admin\Pages\SectionEditPage;
-use WPSearch\Frontend\FileServer;
-use WPSearch\Plugin;
-use WPSearch\Storage\SectionsRepository;
+use WPLlms\Admin\Pages\SectionEditPage;
+use WPLlms\Frontend\FileServer;
+use WPLlms\Plugin;
+use WPLlms\Storage\SectionsRepository;
 
 final class SectionsPage {
-    public const FORM_ACTION = 'wpsearch_sections';
-    public const NONCE_ACTION = 'wpsearch_sections';
-    public const NONCE_NAME = 'wpsearch_sections_nonce';
+    public const FORM_ACTION = 'wpllms_sections';
+    public const NONCE_ACTION = 'wpllms_sections';
+    public const NONCE_NAME = 'wpllms_sections_nonce';
 
     public static function render(): void {
         $repo = new SectionsRepository();
         $sections = $repo->all();
 
         echo '<div class="wrap">';
-        echo '<h1 class="wp-heading-inline">' . esc_html__('Sections', 'wpsearch-ai') . '</h1>';
-        echo ' <a href="' . esc_url(admin_url('admin.php?page=' . SectionEditPage::PAGE_SLUG)) . '" class="page-title-action">' . esc_html__('Add new', 'wpsearch-ai') . '</a>';
+        echo '<h1 class="wp-heading-inline">' . esc_html__('Sections', 'wp-llms') . '</h1>';
+        echo ' <a href="' . esc_url(admin_url('admin.php?page=' . SectionEditPage::PAGE_SLUG)) . '" class="page-title-action">' . esc_html__('Add new', 'wp-llms') . '</a>';
         echo '<hr class="wp-header-end">';
-        echo '<p>' . esc_html__('Sections become H2 headings in your llms.txt. Each section pulls posts via an inclusion rule.', 'wpsearch-ai') . '</p>';
+        echo '<p>' . esc_html__('Sections become H2 headings in your llms.txt. Each section pulls posts via an inclusion rule.', 'wp-llms') . '</p>';
 
         if (isset($_GET['saved'])) {
-            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Section saved.', 'wpsearch-ai') . '</p></div>';
+            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Section saved.', 'wp-llms') . '</p></div>';
         }
 
         if (count($sections) === 0) {
             ?>
-            <p><?php esc_html_e('No sections configured yet. Run the setup wizard or add a section manually.', 'wpsearch-ai'); ?></p>
+            <p><?php esc_html_e('No sections configured yet. Run the setup wizard or add a section manually.', 'wp-llms'); ?></p>
             <p>
-                <a class="button button-primary" href="<?php echo esc_url(admin_url('admin.php?page=wpsearch-wizard')); ?>"><?php esc_html_e('Run setup wizard', 'wpsearch-ai'); ?></a>
-                <a class="button" href="<?php echo esc_url(admin_url('admin.php?page=' . SectionEditPage::PAGE_SLUG)); ?>"><?php esc_html_e('Add a section manually', 'wpsearch-ai'); ?></a>
+                <a class="button button-primary" href="<?php echo esc_url(admin_url('admin.php?page=wpllms-wizard')); ?>"><?php esc_html_e('Run setup wizard', 'wp-llms'); ?></a>
+                <a class="button" href="<?php echo esc_url(admin_url('admin.php?page=' . SectionEditPage::PAGE_SLUG)); ?>"><?php esc_html_e('Add a section manually', 'wp-llms'); ?></a>
             </p>
             <?php
         } else {
             ?>
             <table class="widefat striped">
                 <thead><tr>
-                    <th><?php esc_html_e('Sort', 'wpsearch-ai'); ?></th>
-                    <th><?php esc_html_e('Name', 'wpsearch-ai'); ?></th>
-                    <th><?php esc_html_e('Optional', 'wpsearch-ai'); ?></th>
-                    <th><?php esc_html_e('Inclusion rule', 'wpsearch-ai'); ?></th>
-                    <th><?php esc_html_e('Actions', 'wpsearch-ai'); ?></th>
+                    <th><?php esc_html_e('Sort', 'wp-llms'); ?></th>
+                    <th><?php esc_html_e('Name', 'wp-llms'); ?></th>
+                    <th><?php esc_html_e('Optional', 'wp-llms'); ?></th>
+                    <th><?php esc_html_e('Inclusion rule', 'wp-llms'); ?></th>
+                    <th><?php esc_html_e('Actions', 'wp-llms'); ?></th>
                 </tr></thead>
                 <tbody>
                     <?php foreach ($sections as $section) :
@@ -71,12 +71,12 @@ final class SectionsPage {
                         <tr>
                             <td><?php echo esc_html((string) $section['sort_order']); ?></td>
                             <td><strong><a href="<?php echo esc_url($edit_url); ?>"><?php echo esc_html((string) $section['name']); ?></a></strong></td>
-                            <td><?php echo !empty($section['is_optional']) ? esc_html__('Yes', 'wpsearch-ai') : '—'; ?></td>
+                            <td><?php echo !empty($section['is_optional']) ? esc_html__('Yes', 'wp-llms') : '—'; ?></td>
                             <td><code><?php echo esc_html($rule_label); ?></code></td>
                             <td>
-                                <a href="<?php echo esc_url($edit_url); ?>"><?php esc_html_e('Edit', 'wpsearch-ai'); ?></a>
+                                <a href="<?php echo esc_url($edit_url); ?>"><?php esc_html_e('Edit', 'wp-llms'); ?></a>
                                 |
-                                <a href="<?php echo esc_url($delete_url); ?>" onclick="return confirm('Delete this section?')" style="color:#b32d2e"><?php esc_html_e('Delete', 'wpsearch-ai'); ?></a>
+                                <a href="<?php echo esc_url($delete_url); ?>" onclick="return confirm('Delete this section?')" style="color:#b32d2e"><?php esc_html_e('Delete', 'wp-llms'); ?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -90,7 +90,7 @@ final class SectionsPage {
 
     public static function handle_post(): void {
         if (!current_user_can('manage_options')) {
-            wp_die(esc_html__('Insufficient permissions.', 'wpsearch-ai'));
+            wp_die(esc_html__('Insufficient permissions.', 'wp-llms'));
         }
         check_admin_referer(self::NONCE_ACTION, self::NONCE_NAME);
 
@@ -103,7 +103,7 @@ final class SectionsPage {
             Plugin::maybe_write_static_files();
         }
 
-        wp_safe_redirect(admin_url('admin.php?page=wpsearch-sections'));
+        wp_safe_redirect(admin_url('admin.php?page=wpllms-sections'));
         exit;
     }
 }

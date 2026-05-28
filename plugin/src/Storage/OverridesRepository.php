@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Storage;
+namespace WPLlms\Storage;
 
 final class OverridesRepository {
     public function find_for_post(int $post_id, ?int $section_id = null): ?array {

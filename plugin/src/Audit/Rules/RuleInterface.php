@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit\Rules;
+namespace WPLlms\Audit\Rules;
 
-use WPSearch\Audit\AuditContext;
-use WPSearch\Audit\AuditIssue;
+use WPLlms\Audit\AuditContext;
+use WPLlms\Audit\AuditIssue;
 use WP_Post;
 
 interface RuleInterface {

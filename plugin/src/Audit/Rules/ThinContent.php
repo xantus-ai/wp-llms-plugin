@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit\Rules;
+namespace WPLlms\Audit\Rules;
 
-use WPSearch\Audit\AuditContext;
-use WPSearch\Audit\AuditIssue;
+use WPLlms\Audit\AuditContext;
+use WPLlms\Audit\AuditIssue;
 use WP_Post;
 
 final class ThinContent extends AbstractRule {
@@ -36,11 +36,11 @@ final class ThinContent extends AbstractRule {
             $this->severity(),
             sprintf(
                 /* translators: %d: word count */
-                __('This page has only %1$d words. Pages with under %2$d words give AI systems little context.', 'wpsearch-ai'),
+                __('This page has only %1$d words. Pages with under %2$d words give AI systems little context.', 'wp-llms'),
                 $words,
                 self::MIN_WORDS
             ),
-            __('Expand the content to clearly explain the topic, who it\'s for, and what action to take.', 'wpsearch-ai')
+            __('Expand the content to clearly explain the topic, who it\'s for, and what action to take.', 'wp-llms')
         );
     }
 }

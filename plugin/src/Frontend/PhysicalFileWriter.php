@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Frontend;
+namespace WPLlms\Frontend;
 
-use WPSearch\Generator\DescriptionResolver;
-use WPSearch\Generator\Extractor;
-use WPSearch\Generator\HeaderRenderer;
-use WPSearch\Generator\LlmsFullTxtGenerator;
-use WPSearch\Generator\LlmsTxtGenerator;
-use WPSearch\Generator\SectionResolver;
-use WPSearch\Generator\TitleResolver;
-use WPSearch\Storage\Options;
-use WPSearch\Storage\OverridesRepository;
-use WPSearch\Storage\SectionsRepository;
+use WPLlms\Generator\DescriptionResolver;
+use WPLlms\Generator\Extractor;
+use WPLlms\Generator\HeaderRenderer;
+use WPLlms\Generator\LlmsFullTxtGenerator;
+use WPLlms\Generator\LlmsTxtGenerator;
+use WPLlms\Generator\SectionResolver;
+use WPLlms\Generator\TitleResolver;
+use WPLlms\Storage\Options;
+use WPLlms\Storage\OverridesRepository;
+use WPLlms\Storage\SectionsRepository;
 
 /**
  * Writes llms.txt and llms-full.txt as physical files at the WordPress

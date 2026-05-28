@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit;
+namespace WPLlms\Audit;
 
-use WPSearch\Storage\Schema;
+use WPLlms\Storage\Schema;
 
 final class IssuesRepository {
     public function save(AuditIssue $issue): void {

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit\Rules;
+namespace WPLlms\Audit\Rules;
 
-use WPSearch\Audit\AuditContext;
-use WPSearch\Audit\AuditIssue;
+use WPLlms\Audit\AuditContext;
+use WPLlms\Audit\AuditIssue;
 use WP_Post;
 
 final class BoilerplateIntro extends AbstractRule {
@@ -45,8 +45,8 @@ final class BoilerplateIntro extends AbstractRule {
                 $post->ID,
                 $this->key(),
                 $this->severity(),
-                __('The page opens with the site tagline as its first content. AI systems will read this as boilerplate, not unique value.', 'wpsearch-ai'),
-                __('Open with content specific to this page - the topic, the audience, the value.', 'wpsearch-ai')
+                __('The page opens with the site tagline as its first content. AI systems will read this as boilerplate, not unique value.', 'wp-llms'),
+                __('Open with content specific to this page - the topic, the audience, the value.', 'wp-llms')
             );
         }
 
@@ -57,11 +57,11 @@ final class BoilerplateIntro extends AbstractRule {
                 $this->severity(),
                 sprintf(
                     /* translators: %d: number of CTA phrases found */
-                    __('The first %1$d characters contain %2$d call-to-action phrases. AI systems treat sales-pitch openings as low-value content.', 'wpsearch-ai'),
+                    __('The first %1$d characters contain %2$d call-to-action phrases. AI systems treat sales-pitch openings as low-value content.', 'wp-llms'),
                     self::SAMPLE_LENGTH,
                     $cta_hits
                 ),
-                __('Lead with descriptive content. Move CTAs further down the page.', 'wpsearch-ai')
+                __('Lead with descriptive content. Move CTAs further down the page.', 'wp-llms')
             );
         }
 
@@ -70,8 +70,8 @@ final class BoilerplateIntro extends AbstractRule {
                 $post->ID,
                 $this->key(),
                 $this->severity(),
-                __('The page opens with pricing and a call-to-action. AI systems will skip past this looking for descriptive content.', 'wpsearch-ai'),
-                __('Add a descriptive intro before pricing or CTAs.', 'wpsearch-ai')
+                __('The page opens with pricing and a call-to-action. AI systems will skip past this looking for descriptive content.', 'wp-llms'),
+                __('Add a descriptive intro before pricing or CTAs.', 'wp-llms')
             );
         }
 

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit;
+namespace WPLlms\Audit;
 
 final class AuditIssue {
     public const SEVERITY_CRITICAL = 'critical';

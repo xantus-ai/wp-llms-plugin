@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch;
+namespace WPLlms;
 
-use WPSearch\Cron\Scheduler;
-use WPSearch\Frontend\FileServer;
-use WPSearch\Storage\Options;
-use WPSearch\Storage\Schema;
+use WPLlms\Cron\Scheduler;
+use WPLlms\Frontend\FileServer;
+use WPLlms\Storage\Options;
+use WPLlms\Storage\Schema;
 
 final class Activator {
     public static function activate(): void {

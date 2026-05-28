@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Generator;
+namespace WPLlms\Generator;
 
-use WPSearch\Storage\Options;
+use WPLlms\Storage\Options;
 use WP_Post;
 
 /**

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch;
+namespace WPLlms;
 
-use WPSearch\Cron\Scheduler;
-use WPSearch\Frontend\PhysicalFileWriter;
+use WPLlms\Cron\Scheduler;
+use WPLlms\Frontend\PhysicalFileWriter;
 
 final class Deactivator {
     public static function deactivate(): void {

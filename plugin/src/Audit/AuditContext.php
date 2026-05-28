@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit;
+namespace WPLlms\Audit;
 
-use WPSearch\Generator\Extractor;
+use WPLlms\Generator\Extractor;
 use WP_Post;
 
 /**

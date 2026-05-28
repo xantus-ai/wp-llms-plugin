@@ -1,8 +1,8 @@
-# WPSearch - AI Search Optimization for WordPress
+# WP LLMS - AI Discoverability for WordPress
 
 Make your WordPress site discoverable by AI. Auto-generate and maintain `llms.txt` files, audit content for AI-search readiness, and serve per-page markdown variants - all from a single plugin with no external dependencies.
 
-**WordPress.org slug:** `wpsearch-ai`
+**WordPress.org slug:** `wp-llms`
 **Requires:** WordPress 6.0+ / PHP 8.1+
 **License:** GPL v2 or later
 
@@ -12,7 +12,7 @@ Make your WordPress site discoverable by AI. Auto-generate and maintain `llms.tx
 
 [llms.txt](https://llmstxt.org) is an emerging web standard that provides a curated, markdown-formatted index of a website's most important content, designed for consumption by large language models (ChatGPT, Claude, Perplexity, Google AI Overviews). Over 844,000 websites have adopted it, including Anthropic, Cloudflare, and Stripe.
 
-WordPress sites need a way to generate and maintain this file automatically as content changes. That's what WPSearch does.
+WordPress sites need a way to generate and maintain this file automatically as content changes. That's what WP LLMS does.
 
 ## Features
 
@@ -29,7 +29,7 @@ WordPress sites need a way to generate and maintain this file automatically as c
 
 ### How it works
 
-WPSearch hooks into WordPress's content lifecycle:
+WP LLMS hooks into WordPress's content lifecycle:
 
 1. **On activation**, a setup wizard scans your site and suggests an initial section structure
 2. **On every post save**, the llms.txt cache is invalidated and the file is regenerated
@@ -48,17 +48,17 @@ cd wp-llms-plugin
 ./build.sh
 ```
 
-Upload the resulting `wpsearch-ai.zip` via **WP Admin → Plugins → Add New → Upload Plugin**.
+Upload the resulting `wp-llms.zip` via **WP Admin → Plugins → Add New → Upload Plugin**.
 
 ### Manual
 
-1. Copy the `plugin/` directory to `wp-content/plugins/wpsearch-ai/`
+1. Copy the `plugin/` directory to `wp-content/plugins/wp-llms/`
 2. Run `composer install --no-dev` inside the plugin directory
 3. Activate through the WordPress Plugins menu
 
 ### After activation
 
-1. Go to **WPSearch** in the admin sidebar
+1. Go to **WP LLMS** in the admin sidebar
 2. Run the setup wizard
 3. Visit `/llms.txt` on your site to verify
 
@@ -67,15 +67,15 @@ Upload the resulting `wpsearch-ai.zip` via **WP Admin → Plugins → Add New �
 ```
 ├── README.md                    # This file
 ├── generator-spec.md            # Algorithm specification for the generator/audit engines
-├── build.sh                     # Builds uploadable wpsearch-ai.zip
+├── build.sh                     # Builds uploadable wp-llms.zip
 ├── bump-version.sh              # Bumps version across all source-of-truth files
 └── plugin/                      # WordPress plugin source
-    ├── wpsearch-ai.php          # Bootstrap + WP plugin header
+    ├── wp-llms.php          # Bootstrap + WP plugin header
     ├── composer.json             # PSR-4 autoload + league/html-to-markdown
     ├── readme.txt               # WordPress.org listing format
     ├── uninstall.php            # Cleanup on plugin delete
     ├── CHANGELOG.md             # Keep a Changelog format
-    └── src/                     # PHP source (namespace WPSearch\)
+    └── src/                     # PHP source (namespace WPLlms\)
         ├── Plugin.php           # Singleton, registers all hooks
         ├── Activator.php        # Activation: tables + options + cron + rewrite flush
         ├── Deactivator.php      # Deactivation cleanup
@@ -108,7 +108,7 @@ Upload the resulting `wpsearch-ai.zip` via **WP Admin → Plugins → Add New �
 ./build.sh
 ```
 
-Runs `composer install --no-dev`, checks PHP syntax, and produces `wpsearch-ai.zip` ready for WordPress upload.
+Runs `composer install --no-dev`, checks PHP syntax, and produces `wp-llms.zip` ready for WordPress upload.
 
 ### Bump version
 
@@ -116,7 +116,7 @@ Runs `composer install --no-dev`, checks PHP syntax, and produces `wpsearch-ai.z
 ./bump-version.sh 0.2.0
 ```
 
-Updates the version in `plugin/wpsearch-ai.php` (header + constant), `plugin/readme.txt`, and `plugin/CHANGELOG.md`.
+Updates the version in `plugin/wp-llms.php` (header + constant), `plugin/readme.txt`, and `plugin/CHANGELOG.md`.
 
 ### Lint
 
@@ -130,12 +130,12 @@ Empty output means clean. The build script runs this automatically.
 
 | Thing | Pattern |
 |---|---|
-| PHP namespace | `WPSearch\` |
-| Composer package | `xantus/wpsearch` |
-| Hook/option/transient prefix | `wpsearch_` |
-| DB table prefix | `{$wpdb->prefix}wpsearch_` |
-| Constants prefix | `WPSEARCH_` |
-| Filter names | `wpsearch_*` |
+| PHP namespace | `WPLlms\` |
+| Composer package | `xantus/wpllms` |
+| Hook/option/transient prefix | `wpllms_` |
+| DB table prefix | `{$wpdb->prefix}wpllms_` |
+| Constants prefix | `WPLLMS_` |
+| Filter names | `wpllms_*` |
 
 ## The audit rules
 

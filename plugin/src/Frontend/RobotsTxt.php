@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Frontend;
+namespace WPLlms\Frontend;
 
-use WPSearch\Storage\Options;
+use WPLlms\Storage\Options;
 
 final class RobotsTxt {
     public function register_hooks(): void {

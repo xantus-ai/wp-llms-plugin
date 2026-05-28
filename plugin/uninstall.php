@@ -1,12 +1,12 @@
 <?php
 /**
- * Uninstall handler for WPSearch.
+ * Uninstall handler for WP LLMS.
  *
  * Only runs when the user explicitly deletes the plugin via the WP admin
  * UI - not on simple deactivation. Honors the user's setting for whether
  * to remove all data or preserve it for future reactivation.
  *
- * @package WPSearch
+ * @package WPLlms
  */
 
 declare(strict_types=1);
@@ -15,7 +15,7 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
 
-$settings = get_option('wpsearch_settings', []);
+$settings = get_option('wpllms_settings', []);
 $remove_data = is_array($settings) && !empty($settings['remove_data_on_uninstall']);
 
 // Always remove physical files on uninstall - they're useless without the plugin.
@@ -33,10 +33,10 @@ if (!$remove_data) {
 global $wpdb;
 
 $tables = [
-    $wpdb->prefix . 'wpsearch_sections',
-    $wpdb->prefix . 'wpsearch_overrides',
-    $wpdb->prefix . 'wpsearch_audit_issues',
-    $wpdb->prefix . 'wpsearch_bot_hits',
+    $wpdb->prefix . 'wpllms_sections',
+    $wpdb->prefix . 'wpllms_overrides',
+    $wpdb->prefix . 'wpllms_audit_issues',
+    $wpdb->prefix . 'wpllms_bot_hits',
 ];
 
 foreach ($tables as $table) {
@@ -44,17 +44,17 @@ foreach ($tables as $table) {
 }
 
 $options = [
-    'wpsearch_settings',
-    'wpsearch_license',
-    'wpsearch_dirty',
-    'wpsearch_schema_version',
-    'wpsearch_setup_completed',
+    'wpllms_settings',
+    'wpllms_license',
+    'wpllms_dirty',
+    'wpllms_schema_version',
+    'wpllms_setup_completed',
 ];
 
 foreach ($options as $option) {
     delete_option($option);
 }
 
-wp_clear_scheduled_hook('wpsearch_daily_regen');
-wp_clear_scheduled_hook('wpsearch_regen_llms_txt');
-wp_clear_scheduled_hook('wpsearch_regen_llms_full');
+wp_clear_scheduled_hook('wpllms_daily_regen');
+wp_clear_scheduled_hook('wpllms_regen_llms_txt');
+wp_clear_scheduled_hook('wpllms_regen_llms_full');

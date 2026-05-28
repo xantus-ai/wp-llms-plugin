@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit\Rules;
+namespace WPLlms\Audit\Rules;
 
-use WPSearch\Audit\AuditContext;
-use WPSearch\Audit\AuditIssue;
+use WPLlms\Audit\AuditContext;
+use WPLlms\Audit\AuditIssue;
 use WP_Post;
 
 final class NoInternalLinks extends AbstractRule {
@@ -58,8 +58,8 @@ final class NoInternalLinks extends AbstractRule {
             $post->ID,
             $this->key(),
             $this->severity(),
-            __('No internal links found in content. Internal links help AI systems understand how pages relate.', 'wpsearch-ai'),
-            __('Link to related pages on your site within the content.', 'wpsearch-ai')
+            __('No internal links found in content. Internal links help AI systems understand how pages relate.', 'wp-llms'),
+            __('Link to related pages on your site within the content.', 'wp-llms')
         );
     }
 }

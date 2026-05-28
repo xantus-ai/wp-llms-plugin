@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# Bump WPSearch version across all source-of-truth files.
+# Bump WP LLMS version across all source-of-truth files.
 #
 # Updates:
-#   - plugin/wpsearch-ai.php  (Plugin Header "Version:" + WPSEARCH_VERSION constant)
+#   - plugin/wp-llms.php  (Plugin Header "Version:" + WPLLMS_VERSION constant)
 #   - plugin/readme.txt       (Stable tag)
 #   - plugin/CHANGELOG.md     (rotates [Unreleased] into a new versioned section)
 #
@@ -28,7 +28,7 @@ if ! [[ "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
 fi
 
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
-PLUGIN_FILE="$PROJECT_ROOT/plugin/wpsearch-ai.php"
+PLUGIN_FILE="$PROJECT_ROOT/plugin/wp-llms.php"
 README_FILE="$PROJECT_ROOT/plugin/readme.txt"
 CHANGELOG_FILE="$PROJECT_ROOT/plugin/CHANGELOG.md"
 
@@ -53,7 +53,7 @@ echo "Bumping $CURRENT -> $NEW_VERSION"
 # ---- Plugin file: header line and PHP constant ----
 
 perl -i -pe 's/(\*\s*Version:\s*)[0-9.a-zA-Z\-]+/${1}'"$NEW_VERSION"'/' "$PLUGIN_FILE"
-perl -i -pe "s/(define\('WPSEARCH_VERSION',\s*')[^']+('\))/\${1}$NEW_VERSION\${2}/" "$PLUGIN_FILE"
+perl -i -pe "s/(define\('WPLLMS_VERSION',\s*')[^']+('\))/\${1}$NEW_VERSION\${2}/" "$PLUGIN_FILE"
 
 # ---- readme.txt: Stable tag ----
 
@@ -71,7 +71,7 @@ fi
 # ---- Verify ----
 
 NEW_HEADER=$(grep -E "^\s*\*\s*Version:" "$PLUGIN_FILE" | head -1 | sed -E 's/.*Version:[[:space:]]*([0-9.a-zA-Z\-]+).*/\1/')
-NEW_CONST=$(grep "WPSEARCH_VERSION" "$PLUGIN_FILE" | head -1 | sed -E "s/.*'([0-9.a-zA-Z\-]+)'.*/\1/")
+NEW_CONST=$(grep "WPLLMS_VERSION" "$PLUGIN_FILE" | head -1 | sed -E "s/.*'([0-9.a-zA-Z\-]+)'.*/\1/")
 NEW_TAG=$(grep -E "^Stable tag:" "$README_FILE" | sed -E 's/Stable tag:[[:space:]]*(.+)/\1/')
 
 if [ "$NEW_HEADER" != "$NEW_VERSION" ] || [ "$NEW_CONST" != "$NEW_VERSION" ] || [ "$NEW_TAG" != "$NEW_VERSION" ]; then
@@ -85,9 +85,9 @@ fi
 
 echo ""
 echo "Bumped to $NEW_VERSION:"
-echo "  $PLUGIN_FILE     (Version header + WPSEARCH_VERSION constant)"
+echo "  $PLUGIN_FILE     (Version header + WPLLMS_VERSION constant)"
 echo "  $README_FILE     (Stable tag)"
 echo "  $CHANGELOG_FILE  (rotated [Unreleased] -> [$NEW_VERSION] - $TODAY)"
 echo ""
-echo "Review:  git diff plugin/wpsearch-ai.php plugin/readme.txt plugin/CHANGELOG.md"
+echo "Review:  git diff plugin/wp-llms.php plugin/readme.txt plugin/CHANGELOG.md"
 echo "Build:   ./build.sh"

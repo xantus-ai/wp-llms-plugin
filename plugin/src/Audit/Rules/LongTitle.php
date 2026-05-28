@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit\Rules;
+namespace WPLlms\Audit\Rules;
 
-use WPSearch\Audit\AuditContext;
-use WPSearch\Audit\AuditIssue;
+use WPLlms\Audit\AuditContext;
+use WPLlms\Audit\AuditIssue;
 use WP_Post;
 
 final class LongTitle extends AbstractRule {
@@ -30,10 +30,10 @@ final class LongTitle extends AbstractRule {
             $this->severity(),
             sprintf(
                 /* translators: %d: character count */
-                __('Page title is %d characters. Long titles get truncated in search results.', 'wpsearch-ai'),
+                __('Page title is %d characters. Long titles get truncated in search results.', 'wp-llms'),
                 mb_strlen($title)
             ),
-            __('Trim the title to under 65 characters while keeping the primary topic.', 'wpsearch-ai')
+            __('Trim the title to under 65 characters while keeping the primary topic.', 'wp-llms')
         );
     }
 }

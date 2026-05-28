@@ -1,22 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit;
+namespace WPLlms\Audit;
 
-use WPSearch\Audit\Rules\BoilerplateIntro;
-use WPSearch\Audit\Rules\DuplicateTitle;
-use WPSearch\Audit\Rules\GenericH1;
-use WPSearch\Audit\Rules\LongTitle;
-use WPSearch\Audit\Rules\MissingH1;
-use WPSearch\Audit\Rules\MultipleH1;
-use WPSearch\Audit\Rules\NoH2Headings;
-use WPSearch\Audit\Rules\NoInternalLinks;
-use WPSearch\Audit\Rules\RuleInterface;
-use WPSearch\Audit\Rules\ShortTitle;
-use WPSearch\Audit\Rules\StaleContent;
-use WPSearch\Audit\Rules\ThinContent;
-use WPSearch\Audit\Rules\ThinMeta;
-use WPSearch\Generator\Extractor;
+use WPLlms\Audit\Rules\BoilerplateIntro;
+use WPLlms\Audit\Rules\DuplicateTitle;
+use WPLlms\Audit\Rules\GenericH1;
+use WPLlms\Audit\Rules\LongTitle;
+use WPLlms\Audit\Rules\MissingH1;
+use WPLlms\Audit\Rules\MultipleH1;
+use WPLlms\Audit\Rules\NoH2Headings;
+use WPLlms\Audit\Rules\NoInternalLinks;
+use WPLlms\Audit\Rules\RuleInterface;
+use WPLlms\Audit\Rules\ShortTitle;
+use WPLlms\Audit\Rules\StaleContent;
+use WPLlms\Audit\Rules\ThinContent;
+use WPLlms\Audit\Rules\ThinMeta;
+use WPLlms\Generator\Extractor;
 use WP_Post;
 
 final class Auditor {
@@ -129,7 +129,7 @@ final class Auditor {
         $filtered = array_diff(array_values($public), $excluded);
 
         /** @var string[] $allowed */
-        $allowed = apply_filters('wpsearch_eligible_post_types', $filtered);
+        $allowed = apply_filters('wpllms_eligible_post_types', $filtered);
         return array_values(array_filter(array_map('strval', $allowed)));
     }
 

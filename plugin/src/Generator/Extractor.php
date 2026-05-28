@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Generator;
+namespace WPLlms\Generator;
 
 use DOMDocument;
 use DOMNode;
@@ -79,7 +79,7 @@ final class Extractor {
 
     private function cache_key(string $kind, WP_Post $post): string {
         $modified = strtotime($post->post_modified_gmt) ?: 0;
-        return sprintf('wpsearch_extracted_%s_%d_%d', $kind, $post->ID, $modified);
+        return sprintf('wpllms_extracted_%s_%d_%d', $kind, $post->ID, $modified);
     }
 
     private function stage_1_resolve_source(WP_Post $post): string {
@@ -150,7 +150,7 @@ final class Extractor {
         $dom = new DOMDocument('1.0', 'UTF-8');
         $previous = libxml_use_internal_errors(true);
         $dom->loadHTML(
-            '<?xml encoding="UTF-8"?><div id="wpsearch-root">' . $html . '</div>',
+            '<?xml encoding="UTF-8"?><div id="wpllms-root">' . $html . '</div>',
             LIBXML_NOERROR | LIBXML_NOWARNING
         );
         libxml_clear_errors();
@@ -206,7 +206,7 @@ final class Extractor {
             }
         }
 
-        $root = $dom->getElementById('wpsearch-root');
+        $root = $dom->getElementById('wpllms-root');
         if (!$root) {
             return '';
         }

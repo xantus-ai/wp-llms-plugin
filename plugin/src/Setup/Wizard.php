@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Setup;
+namespace WPLlms\Setup;
 
-use WPSearch\Frontend\FileServer;
-use WPSearch\Frontend\PhysicalFileWriter;
-use WPSearch\Storage\Options;
-use WPSearch\Storage\SectionsRepository;
+use WPLlms\Frontend\FileServer;
+use WPLlms\Frontend\PhysicalFileWriter;
+use WPLlms\Storage\Options;
+use WPLlms\Storage\SectionsRepository;
 
 /**
  * Orchestrates the multi-step setup wizard. Persists wizard state in
- * the wpsearch_wizard_state option until the user completes setup.
+ * the wpllms_wizard_state option until the user completes setup.
  */
 final class Wizard {
-    public const STATE_KEY = 'wpsearch_wizard_state';
+    public const STATE_KEY = 'wpllms_wizard_state';
 
     public const STEP_BRAND_VOICE = 'brand_voice';
     public const STEP_DETECT = 'detect';
@@ -66,12 +66,12 @@ final class Wizard {
         $context = trim((string) ($input['site_context'] ?? ''));
 
         if ($h1 === '') {
-            $errors['site_h1'] = __('Required.', 'wpsearch-ai');
+            $errors['site_h1'] = __('Required.', 'wp-llms');
         }
         if ($summary === '') {
-            $errors['site_summary'] = __('Required. Write 1-3 sentences describing what your site does.', 'wpsearch-ai');
+            $errors['site_summary'] = __('Required. Write 1-3 sentences describing what your site does.', 'wp-llms');
         } elseif (mb_strlen($summary) > 500) {
-            $errors['site_summary'] = __('Keep the summary under 500 characters.', 'wpsearch-ai');
+            $errors['site_summary'] = __('Keep the summary under 500 characters.', 'wp-llms');
         }
 
         if (count($errors) > 0) {

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Generator;
+namespace WPLlms\Generator;
 
-use WPSearch\Storage\SectionsRepository;
+use WPLlms\Storage\SectionsRepository;
 use WP_Post;
 
 /**
@@ -99,7 +99,7 @@ final class LlmsFullTxtGenerator {
             return '';
         }
 
-        return "## " . __('Optional', 'wpsearch-ai') . "\n\n" . implode("\n\n", $sub_blocks);
+        return "## " . __('Optional', 'wp-llms') . "\n\n" . implode("\n\n", $sub_blocks);
     }
 
     private function render_post(WP_Post $post, ?int $section_id, int $heading_level): string {

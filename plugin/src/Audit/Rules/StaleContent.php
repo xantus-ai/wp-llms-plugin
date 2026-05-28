@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit\Rules;
+namespace WPLlms\Audit\Rules;
 
-use WPSearch\Audit\AuditContext;
-use WPSearch\Audit\AuditIssue;
-use WPSearch\Storage\Options;
+use WPLlms\Audit\AuditContext;
+use WPLlms\Audit\AuditIssue;
+use WPLlms\Storage\Options;
 use WP_Post;
 
 final class StaleContent extends AbstractRule {
@@ -39,11 +39,11 @@ final class StaleContent extends AbstractRule {
             $this->severity(),
             sprintf(
                 /* translators: 1: age in months, 2: threshold in months */
-                __('This content was last updated %1$d months ago (threshold: %2$d months). Stale content signals to AI systems that the site may not be actively maintained.', 'wpsearch-ai'),
+                __('This content was last updated %1$d months ago (threshold: %2$d months). Stale content signals to AI systems that the site may not be actively maintained.', 'wp-llms'),
                 $age_months,
                 $threshold
             ),
-            __('Either update the content with current information, or exclude this page from llms.txt if it is no longer maintained.', 'wpsearch-ai')
+            __('Either update the content with current information, or exclude this page from llms.txt if it is no longer maintained.', 'wp-llms')
         );
     }
 

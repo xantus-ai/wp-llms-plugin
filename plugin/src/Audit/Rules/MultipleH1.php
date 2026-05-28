@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit\Rules;
+namespace WPLlms\Audit\Rules;
 
-use WPSearch\Audit\AuditContext;
-use WPSearch\Audit\AuditIssue;
+use WPLlms\Audit\AuditContext;
+use WPLlms\Audit\AuditIssue;
 use WP_Post;
 
 final class MultipleH1 extends AbstractRule {
@@ -29,10 +29,10 @@ final class MultipleH1 extends AbstractRule {
             $this->severity(),
             sprintf(
                 /* translators: %d: count of h1 headings */
-                __('Found %d <h1> headings on this page. There should be exactly one.', 'wpsearch-ai'),
+                __('Found %d <h1> headings on this page. There should be exactly one.', 'wp-llms'),
                 $count
             ),
-            __('Demote extra H1s to H2 or lower. Multiple H1s confuse AI systems trying to identify the page topic.', 'wpsearch-ai')
+            __('Demote extra H1s to H2 or lower. Multiple H1s confuse AI systems trying to identify the page topic.', 'wp-llms')
         );
     }
 }

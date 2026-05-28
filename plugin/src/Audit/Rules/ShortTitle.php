@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit\Rules;
+namespace WPLlms\Audit\Rules;
 
-use WPSearch\Audit\AuditContext;
-use WPSearch\Audit\AuditIssue;
+use WPLlms\Audit\AuditContext;
+use WPLlms\Audit\AuditIssue;
 use WP_Post;
 
 final class ShortTitle extends AbstractRule {
@@ -30,11 +30,11 @@ final class ShortTitle extends AbstractRule {
             $this->severity(),
             sprintf(
                 /* translators: 1: title, 2: char count */
-                __('The page title "%1$s" is only %2$d characters. Short titles give AI systems less context.', 'wpsearch-ai'),
+                __('The page title "%1$s" is only %2$d characters. Short titles give AI systems less context.', 'wp-llms'),
                 $title,
                 mb_strlen($title)
             ),
-            __('Expand the title to be more descriptive. Aim for 30-65 characters that include the page\'s primary topic.', 'wpsearch-ai')
+            __('Expand the title to be more descriptive. Aim for 30-65 characters that include the page\'s primary topic.', 'wp-llms')
         );
     }
 }

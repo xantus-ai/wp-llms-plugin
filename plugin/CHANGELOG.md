@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the WPSearch plugin will be documented in this file.
+All notable changes to the WP LLMS plugin will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
@@ -48,9 +48,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 **Plugin scaffold**
-- Bootstrap file (`wpsearch-ai.php`) with PHP/WP version guards and PSR-4 autoloader fallback
+- Bootstrap file (`wp-llms.php`) with PHP/WP version guards and PSR-4 autoloader fallback
 - Composer config with league/html-to-markdown and dev tools
-- Plugin singleton (`WPSearch\Plugin`)
+- Plugin singleton (`WP LLMS\Plugin`)
 - Activator and Deactivator with rewrite-rule flushing
 - Database schema (`Storage\Schema`) with four tables: `sections`, `overrides`, `audit_issues`, `bot_hits`
 - Options wrapper (`Storage\Options`) with default settings and license stub
@@ -94,11 +94,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `Admin\Pages\AuditPage` - issue dashboard with severity counts, "Run audit now" button, sortable issue table with edit-post links
 - `Admin\Pages\SectionsPage` - list view of configured sections with delete action
 - `Admin\Pages\SettingsPage` - full settings form (brand voice, integrations, audit threshold, data removal toggle)
-- `Admin\Menu` - top-level "WPSearch" menu with 5 sub-pages, dashboard surfaces issue counts and llms.txt URL
+- `Admin\Menu` - top-level "WP LLMS" menu with 5 sub-pages, dashboard surfaces issue counts and llms.txt URL
 - All form processing goes through `admin-post.php` actions with nonce verification
 
 **Cron**
-- Daily tick now invalidates llms.txt cache and runs full-site audit, persisting last-run timestamp to `wpsearch_last_audit` option
+- Daily tick now invalidates llms.txt cache and runs full-site audit, persisting last-run timestamp to `wpllms_last_audit` option
 
 **Phase 1 polish**
 - `Generator\HeaderRenderer` extracted from `LlmsTxtGenerator` so both llms.txt and llms-full.txt share the same H1+blockquote+context render

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Storage;
+namespace WPLlms\Storage;
 
 final class SectionsRepository {
     public function all(): array {

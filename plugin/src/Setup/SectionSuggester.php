@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Setup;
+namespace WPLlms\Setup;
 
 /**
  * Generates suggested sections from a SiteDetector report.
@@ -66,7 +66,7 @@ final class SectionSuggester {
                 ],
                 'preview_count' => 0,
                 'requires_curation' => true,
-                'note' => __('You\'ll need to hand-pick 20-30 evergreen posts in the Sections admin. Auto-including all blog posts would bloat the file.', 'wpsearch-ai'),
+                'note' => __('You\'ll need to hand-pick 20-30 evergreen posts in the Sections admin. Auto-including all blog posts would bloat the file.', 'wp-llms'),
             ];
             $sort_order += 10;
         }

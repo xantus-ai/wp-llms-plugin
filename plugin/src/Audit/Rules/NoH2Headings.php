@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Audit\Rules;
+namespace WPLlms\Audit\Rules;
 
-use WPSearch\Audit\AuditContext;
-use WPSearch\Audit\AuditIssue;
+use WPLlms\Audit\AuditContext;
+use WPLlms\Audit\AuditIssue;
 use WP_Post;
 
 final class NoH2Headings extends AbstractRule {
@@ -35,10 +35,10 @@ final class NoH2Headings extends AbstractRule {
             $this->severity(),
             sprintf(
                 /* translators: %d: word count */
-                __('This page has %d words but no H2 subheadings. AI systems use heading structure to chunk and understand long content.', 'wpsearch-ai'),
+                __('This page has %d words but no H2 subheadings. AI systems use heading structure to chunk and understand long content.', 'wp-llms'),
                 $words
             ),
-            __('Break the content into sections with descriptive H2 subheadings.', 'wpsearch-ai')
+            __('Break the content into sections with descriptive H2 subheadings.', 'wp-llms')
         );
     }
 }

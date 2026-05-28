@@ -1,30 +1,30 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Frontend;
+namespace WPLlms\Frontend;
 
-use WPSearch\Generator\DescriptionResolver;
-use WPSearch\Generator\Extractor;
-use WPSearch\Generator\HeaderRenderer;
-use WPSearch\Generator\LlmsFullTxtGenerator;
-use WPSearch\Generator\LlmsTxtGenerator;
-use WPSearch\Generator\MdEndpointRenderer;
-use WPSearch\Generator\SectionResolver;
-use WPSearch\Generator\TitleResolver;
-use WPSearch\Storage\Options;
-use WPSearch\Storage\OverridesRepository;
-use WPSearch\Storage\SectionsRepository;
+use WPLlms\Generator\DescriptionResolver;
+use WPLlms\Generator\Extractor;
+use WPLlms\Generator\HeaderRenderer;
+use WPLlms\Generator\LlmsFullTxtGenerator;
+use WPLlms\Generator\LlmsTxtGenerator;
+use WPLlms\Generator\MdEndpointRenderer;
+use WPLlms\Generator\SectionResolver;
+use WPLlms\Generator\TitleResolver;
+use WPLlms\Storage\Options;
+use WPLlms\Storage\OverridesRepository;
+use WPLlms\Storage\SectionsRepository;
 use WP_Post;
 
 /**
  * Serves /llms.txt, /llms-full.txt, and /{slug}.md per spec §8.
  */
 final class FileServer {
-    public const QUERY_VAR = 'wpsearch_file';
-    public const MD_QUERY_VAR = 'wpsearch_md_slug';
-    public const CACHE_KEY_LLMS = 'wpsearch_llms_txt_cache';
-    public const CACHE_KEY_LLMS_FULL = 'wpsearch_llms_full_txt_cache';
-    public const CACHE_KEY_MD_PREFIX = 'wpsearch_md_';
+    public const QUERY_VAR = 'wpllms_file';
+    public const MD_QUERY_VAR = 'wpllms_md_slug';
+    public const CACHE_KEY_LLMS = 'wpllms_llms_txt_cache';
+    public const CACHE_KEY_LLMS_FULL = 'wpllms_llms_full_txt_cache';
+    public const CACHE_KEY_MD_PREFIX = 'wpllms_md_';
 
     public function register_hooks(): void {
         add_action('init', [$this, 'register_rewrite_rules']);
@@ -193,7 +193,7 @@ final class FileServer {
         header('Last-Modified: ' . $last_modified);
         header('ETag: ' . $etag);
         header('X-Robots-Tag: all');
-        header('X-Generated-By: WPSearch/' . WPSEARCH_VERSION);
+        header('X-Generated-By: WP LLMS/' . WPLLMS_VERSION);
 
         $if_none_match = $_SERVER['HTTP_IF_NONE_MATCH'] ?? '';
         if (is_string($if_none_match) && $if_none_match === $etag) {

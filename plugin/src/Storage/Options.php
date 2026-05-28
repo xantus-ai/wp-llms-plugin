@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Storage;
+namespace WPLlms\Storage;
 
 final class Options {
-    public const SETTINGS_KEY = 'wpsearch_settings';
-    public const LICENSE_KEY = 'wpsearch_license';
-    public const DIRTY_KEY = 'wpsearch_dirty';
-    public const SETUP_COMPLETED_KEY = 'wpsearch_setup_completed';
+    public const SETTINGS_KEY = 'wpllms_settings';
+    public const LICENSE_KEY = 'wpllms_license';
+    public const DIRTY_KEY = 'wpllms_dirty';
+    public const SETUP_COMPLETED_KEY = 'wpllms_setup_completed';
 
     public static function seed_defaults(): void {
         if (get_option(self::SETTINGS_KEY) === false) {

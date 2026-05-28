@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Cron;
+namespace WPLlms\Cron;
 
-use WPSearch\Audit\Auditor;
-use WPSearch\Frontend\FileServer;
-use WPSearch\Frontend\PhysicalFileWriter;
+use WPLlms\Audit\Auditor;
+use WPLlms\Frontend\FileServer;
+use WPLlms\Frontend\PhysicalFileWriter;
 
 final class Scheduler {
-    public const DAILY_HOOK = 'wpsearch_daily_regen';
-    public const REGEN_LLMS_TXT_HOOK = 'wpsearch_regen_llms_txt';
-    public const REGEN_LLMS_FULL_HOOK = 'wpsearch_regen_llms_full';
+    public const DAILY_HOOK = 'wpllms_daily_regen';
+    public const REGEN_LLMS_TXT_HOOK = 'wpllms_regen_llms_txt';
+    public const REGEN_LLMS_FULL_HOOK = 'wpllms_regen_llms_full';
 
     public static function schedule_events(): void {
         if (!wp_next_scheduled(self::DAILY_HOOK)) {
@@ -42,7 +42,7 @@ final class Scheduler {
         // Run full-site audit (with site context for cross-post rules).
         try {
             $result = (new Auditor())->audit_all();
-            update_option('wpsearch_last_audit', [
+            update_option('wpllms_last_audit', [
                 'completed_at' => current_time('mysql', true),
                 'issues_found' => $result['issues_found'],
                 'posts_audited' => $result['posts_audited'],

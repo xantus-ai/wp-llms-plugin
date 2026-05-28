@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WPSearch\Generator;
+namespace WPLlms\Generator;
 
-use WPSearch\Storage\Options;
+use WPLlms\Storage\Options;
 
 /**
  * Renders the H1 + blockquote + context paragraphs that lead every
@@ -31,7 +31,7 @@ final class HeaderRenderer {
         if ($summary !== '') {
             $lines[] = '> ' . $this->collapse_blockquote($summary);
         } else {
-            $lines[] = '> ' . __('No summary set. Configure in WPSearch settings.', 'wpsearch-ai');
+            $lines[] = '> ' . __('No summary set. Configure in WP LLMS settings.', 'wp-llms');
         }
         if ($context !== '') {
             $lines[] = '';
