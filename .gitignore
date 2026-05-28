@@ -1,0 +1,23 @@
+# Build artifacts
+wpsearch-ai.zip
+build/
+
+# Internal/proprietary docs
+docs/internal/
+
+# Dependencies (installed via build.sh)
+plugin/vendor/
+plugin/composer.lock
+
+# Claude Code
+.claude/
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# PHP
+.phpunit.result.cache

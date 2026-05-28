@@ -1,0 +1,43 @@
+{
+    "name": "xantus/wpsearch",
+    "description": "WPSearch - AI Search Optimization for WordPress. Auto-generate llms.txt, audit content for AI-search readiness, generate schema, and track AI bot activity.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://wpsear.ch",
+    "authors": [
+        {
+            "name": "Xantus AI",
+            "homepage": "https://xant.us"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "league/html-to-markdown": "^5.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "brain/monkey": "^2.6",
+        "squizlabs/php_codesniffer": "^3.7",
+        "wp-coding-standards/wpcs": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "WPSearch\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WPSearch\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "lint": "phpcs --standard=WordPress src/"
+    }
+}
