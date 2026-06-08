@@ -4,7 +4,7 @@ Tags: llms.txt, ai search, ai seo, llms, ai discoverability
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 0.1.8
+Stable tag: 0.1.9
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,7 +73,20 @@ Some managed hosts have nginx rules that intercept `.txt` URLs before they reach
 
 In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is uninstalled" before deleting the plugin from the Plugins page.
 
+== Screenshots ==
+
+1. Dashboard — see your llms.txt status, audit summary, and serving mode at a glance.
+2. Sections list — organize content into named groups that map to llms.txt sections.
+3. Search-and-select post picker — find content by title instead of hunting for post IDs.
+4. Audit page — 12 quality rules flag missing H1s, thin meta descriptions, generic headings, and more.
+5. Setup wizard — detects your site's content structure and proposes a starting llms.txt configuration.
+6. The generated /llms.txt file, served at your site root.
+7. Settings — configure brand voice, integrations, audit threshold, and uninstall behavior.
+
 == Changelog ==
+
+= 0.1.9 =
+* Fixed: Audit rules now read Elementor-rendered content correctly. The `missing_h1` rule no longer reports false positives on Elementor posts after the user has added an H1 widget. Also fixes stale H1 frequency data in the `generic_h1` rule and ensures the llms.txt generator picks up Elementor widget content even when `post_content` is non-empty.
 
 = 0.1.8 =
 * Changed: Renamed the plugin to "llms.txt for WordPress" (WP.org slug `llms-txt`). Surface-level only — internal identifiers, DB tables, and option keys are unchanged.
@@ -108,6 +121,9 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 * Initial scaffold release.
 
 == Upgrade Notice ==
+
+= 0.1.9 =
+Fixes false positives in the audit for Elementor posts. Re-run the audit after upgrading.
 
 = 0.1.8 =
 User-facing plugin rename to "llms.txt for WordPress". Internal identifiers unchanged - no migration required.

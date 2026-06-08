@@ -83,16 +83,17 @@ final class Extractor {
     }
 
     private function stage_1_resolve_source(WP_Post $post): string {
-        $content = (string) $post->post_content;
-
-        if (trim($content) === '' && $this->is_elementor_post($post->ID)) {
+        // Elementor stores the page design in _elementor_data meta, not post_content.
+        // Always prefer the Elementor frontend render for builder posts; only fall back
+        // to post_content if Elementor's frontend renderer is unavailable.
+        if ($this->is_elementor_post($post->ID)) {
             $rendered = $this->render_elementor($post->ID);
             if ($rendered !== '') {
                 return $rendered;
             }
         }
 
-        return $content;
+        return (string) $post->post_content;
     }
 
     private function is_elementor_post(int $post_id): bool {

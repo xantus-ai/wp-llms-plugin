@@ -11,10 +11,16 @@ abstract class AbstractRule implements RuleInterface {
     }
 
     protected function rendered_content(WP_Post $post): string {
-        $content = (string) $post->post_content;
-        if ($content === '' && $this->is_elementor_post($post->ID)) {
-            $content = $this->render_elementor($post->ID);
+        // Elementor stores the page design in _elementor_data meta, not post_content.
+        // Always prefer the Elementor frontend render for builder posts; only fall back
+        // to filtered post_content if Elementor's frontend renderer is unavailable.
+        if ($this->is_elementor_post($post->ID)) {
+            $rendered = $this->render_elementor($post->ID);
+            if ($rendered !== '') {
+                return $rendered;
+            }
         }
+        $content = (string) $post->post_content;
         $rendered = apply_filters('the_content', $content);
         return is_string($rendered) ? $rendered : '';
     }

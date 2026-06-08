@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.9] - 2026-06-08
+
+### Fixed
+- Audit rules now correctly read Elementor-rendered content. Previously the audit fell back to Elementor only when `post_content` was empty, which is rarely the case in practice — Elementor stores its design in the `_elementor_data` meta but most posts have stub or migrated content in `post_content`. Result: the `missing_h1` rule (and any other rule that inspects rendered HTML) reported false positives on Elementor posts and stayed dirty even after the user added an H1 widget in Elementor. Fixed in `Audit\Rules\AbstractRule::rendered_content()`, `Audit\AuditContext::extract_h1()`, and `Generator\Extractor::stage_1_resolve_source()` — for Elementor posts, the renderer now always uses `Elementor\Frontend::get_builder_content_for_display()` first and only falls back to filtered `post_content` if the Elementor frontend is unavailable.
+
 ## [0.1.8] - 2026-05-28
 
 ### Changed
