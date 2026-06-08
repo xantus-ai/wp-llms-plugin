@@ -71,25 +71,7 @@ final class AuditContext {
     }
 
     private function extract_h1(WP_Post $post): ?string {
-        // Elementor stores the page design in _elementor_data meta, not post_content.
-        // Always prefer the Elementor frontend render for builder posts; only fall back
-        // to filtered post_content if Elementor's frontend renderer is unavailable.
-        $rendered = '';
-        if (get_post_meta($post->ID, '_elementor_edit_mode', true) === 'builder'
-            && class_exists('\\Elementor\\Plugin')) {
-            try {
-                $plugin = \Elementor\Plugin::$instance;
-                if ($plugin && isset($plugin->frontend)) {
-                    $rendered = (string) $plugin->frontend->get_builder_content_for_display($post->ID);
-                }
-            } catch (\Throwable $e) {
-                $rendered = '';
-            }
-        }
-        if ($rendered === '') {
-            $filtered = apply_filters('the_content', (string) $post->post_content);
-            $rendered = is_string($filtered) ? $filtered : '';
-        }
+        $rendered = RenderedContentCache::get($post);
         if (preg_match('/<h1[^>]*>(.*?)<\/h1>/is', $rendered, $m)) {
             $text = wp_strip_all_tags($m[1]);
             return trim((string) $text);

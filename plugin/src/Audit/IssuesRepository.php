@@ -45,6 +45,17 @@ final class IssuesRepository {
         $wpdb->delete($table, ['post_id' => $post_id, 'resolved_at' => null]);
     }
 
+    /**
+     * Clear all unresolved issues across all posts for a single rule. Used
+     * during the chunked audit's site-context phase to wipe stale findings
+     * before re-running site-context rules with fresh frequency data.
+     */
+    public function clear_rule(string $rule): void {
+        global $wpdb;
+        $table = Schema::table_name('audit_issues');
+        $wpdb->delete($table, ['rule' => $rule, 'resolved_at' => null]);
+    }
+
     public function clear_for_post_and_rule(int $post_id, string $rule): void {
         global $wpdb;
         $table = Schema::table_name('audit_issues');

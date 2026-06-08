@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WPLlms\Audit\Rules;
 
+use WPLlms\Audit\RenderedContentCache;
 use WP_Post;
 
 abstract class AbstractRule implements RuleInterface {
@@ -11,37 +12,11 @@ abstract class AbstractRule implements RuleInterface {
     }
 
     protected function rendered_content(WP_Post $post): string {
-        // Elementor stores the page design in _elementor_data meta, not post_content.
-        // Always prefer the Elementor frontend render for builder posts; only fall back
-        // to filtered post_content if Elementor's frontend renderer is unavailable.
-        if ($this->is_elementor_post($post->ID)) {
-            $rendered = $this->render_elementor($post->ID);
-            if ($rendered !== '') {
-                return $rendered;
-            }
-        }
-        $content = (string) $post->post_content;
-        $rendered = apply_filters('the_content', $content);
-        return is_string($rendered) ? $rendered : '';
+        return RenderedContentCache::get($post);
     }
 
     protected function is_elementor_post(int $post_id): bool {
         return get_post_meta($post_id, '_elementor_edit_mode', true) === 'builder';
-    }
-
-    protected function render_elementor(int $post_id): string {
-        if (!class_exists('\\Elementor\\Plugin')) {
-            return '';
-        }
-        try {
-            $plugin = \Elementor\Plugin::$instance;
-            if ($plugin && isset($plugin->frontend)) {
-                return (string) $plugin->frontend->get_builder_content_for_display($post_id);
-            }
-        } catch (\Throwable $e) {
-            // Fall through.
-        }
-        return '';
     }
 
     protected function plain_text(WP_Post $post): string {

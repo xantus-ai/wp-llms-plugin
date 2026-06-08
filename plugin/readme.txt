@@ -4,7 +4,7 @@ Tags: llms.txt, ai search, ai seo, llms, ai discoverability
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 0.1.9
+Stable tag: 0.1.10
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,11 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 
 == Changelog ==
 
+= 0.1.10 =
+* Fixed: Full-site audit no longer times out (502) on builder-heavy sites. The audit now runs in chunks with a per-call time budget, persisting progress between requests. The audit page shows progress and a Continue button until the run is complete.
+* Added: Shared rendered-content cache so the same Elementor render isn't repeated across 12 rules. Repeat audits are dramatically faster.
+* Changed: Cron's daily tick uses the chunked audit too — if a tick can't finish, a single follow-up tick is scheduled 5 minutes later so progress doesn't sit idle until tomorrow.
+
 = 0.1.9 =
 * Fixed: Audit rules now read Elementor-rendered content correctly. The `missing_h1` rule no longer reports false positives on Elementor posts after the user has added an H1 widget. Also fixes stale H1 frequency data in the `generic_h1` rule and ensures the llms.txt generator picks up Elementor widget content even when `post_content` is non-empty.
 
@@ -121,6 +126,9 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 * Initial scaffold release.
 
 == Upgrade Notice ==
+
+= 0.1.10 =
+Fixes the 502 timeout when running the full-site audit on builder-heavy sites. The audit now chunks itself across multiple requests. Click Continue if the audit pauses.
 
 = 0.1.9 =
 Fixes false positives in the audit for Elementor posts. Re-run the audit after upgrading.

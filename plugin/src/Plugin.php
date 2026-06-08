@@ -47,6 +47,7 @@ final class Plugin {
     private function register_hooks(): void {
         add_action('admin_menu', [Menu::class, 'register']);
         add_action(Scheduler::DAILY_HOOK, [Scheduler::class, 'on_daily_tick']);
+        add_action(Scheduler::AUDIT_RESUME_HOOK, [Scheduler::class, 'run_audit_chunk']);
 
         $this->file_server->register_hooks();
         $this->head_injector->register_hooks();

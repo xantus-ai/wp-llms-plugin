@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.10] - 2026-06-08
+
+### Fixed
+- **Full-site audit no longer times out (502 Bad Gateway) on builder-heavy sites.** v0.1.9 made the audit always render Elementor content for accuracy, but on sites with many Elementor pages the cumulative `get_builder_content_for_display()` cost exceeded PHP-FPM's request timeout, returning 502 from Cloudflare/origin.
+
+### Changed
+- **Audit now runs in chunks with a per-call time budget.** `Auditor::audit_all()` accepts a `$max_seconds` argument (20s from the admin UI, 60s from cron) and persists progress in the `wpllms_audit_progress` option. Each request processes posts until the budget is exhausted, then returns; the next request resumes from where it left off. The audit page UI shows progress (X of Y posts, current phase) and a Continue/Cancel pair of buttons.
+- Audit now runs in two phases. Phase 1 runs post-local rules (10 of 12) on each eligible post. Phase 2 runs site-context rules (`generic_h1`, `duplicate_title`) once, with `AuditContext` built cheaply from the cache warmed in phase 1. Both phases respect the time budget and resume across requests.
+- Cron's daily tick now uses the chunked audit too. If a tick can't complete the audit, a one-time follow-up tick is scheduled 5 minutes later via `wpllms_audit_resume` so progress doesn't sit idle until the next day.
+
+### Added
+- `Audit\RenderedContentCache` — shared transient cache (keyed on `post_modified_gmt`) for rendered post HTML. Used by both `Audit\Rules\AbstractRule::rendered_content()` and `Audit\AuditContext::extract_h1()` so the same render isn't repeated across 12 rules × N posts. Cache hits dramatically reduce the cost of repeat audits.
+- `Audit\IssuesRepository::clear_rule(string $rule)` — removes all unresolved issues for a single rule, used between audit phases to avoid stale site-context findings.
+- `Audit\Auditor::get_progress()` and `clear_progress()` — public helpers for UI and tests.
+
 ## [0.1.9] - 2026-06-08
 
 ### Fixed
