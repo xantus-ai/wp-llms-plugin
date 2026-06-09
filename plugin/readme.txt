@@ -4,7 +4,7 @@ Tags: llms.txt, ai search, ai seo, llms, ai discoverability
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 0.1.10
+Stable tag: 0.1.11
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,10 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 
 == Changelog ==
 
+= 0.1.11 =
+* Fixed: `missing_h1` rule no longer flags WooCommerce product pages where the product title is rendered as `<h1>` by WooCommerce's template.
+* Added: `wpllms_missing_h1_template_post_types` filter for registering custom post types whose templates render the title as H1.
+
 = 0.1.10 =
 * Fixed: Full-site audit no longer times out (502) on builder-heavy sites. The audit now runs in chunks with a per-call time budget, persisting progress between requests. The audit page shows progress and a Continue button until the run is complete.
 * Added: Shared rendered-content cache so the same Elementor render isn't repeated across 12 rules. Repeat audits are dramatically faster.
@@ -126,6 +130,9 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 * Initial scaffold release.
 
 == Upgrade Notice ==
+
+= 0.1.11 =
+Fixes missing-H1 false positives on WooCommerce product pages. Re-run the audit after upgrading.
 
 = 0.1.10 =
 Fixes the 502 timeout when running the full-site audit on builder-heavy sites. The audit now chunks itself across multiple requests. Click Continue if the audit pauses.

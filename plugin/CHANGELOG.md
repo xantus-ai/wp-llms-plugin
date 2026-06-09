@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.11] - 2026-06-08
+
+### Fixed
+- `missing_h1` rule no longer reports false positives on WooCommerce product pages. WooCommerce's `single-product/title.php` template renders `<h1 class="product_title">` from `the_title()`, so the H1 lives outside `post_content` — same structural issue the rule already handled for blog posts. The `product` post type is now in the default skip list alongside `post`. Builder-driven products (Elementor templates) still have their content checked.
+
+### Added
+- `wpllms_missing_h1_template_post_types` filter so site owners can register custom post types whose templates render the title as H1 (default: `['post', 'product']`).
+
 ## [0.1.10] - 2026-06-08
 
 ### Fixed
