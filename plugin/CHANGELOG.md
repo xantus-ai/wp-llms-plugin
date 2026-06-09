@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.16] - 2026-06-09
+
+### Fixed
+- **Elementor CSS no longer leaks into llms.txt descriptions, llms-full.txt content, or per-page `.md` endpoints.** Elementor's `get_builder_content_for_display()` embeds per-post inline `<style>` blocks containing element selectors (e.g., `.elementor-101102 .elementor-element-f59338d > .elementor-container { max-width: 1003px; }`) directly in the rendered HTML. The generator's `wp_kses()` step stripped the `<style>` tags but preserved their text content, so the CSS rules survived as raw text and ended up as the fallback "first sentence of content" description for any post without a meta description or excerpt. Result: ~60+ entries on builder-heavy sites had selectors-and-declarations as their llms.txt description. Latent since v0.1.9 (which switched the Extractor to always render Elementor for builder posts); only visible to sites with meaningful Elementor adoption + missing/empty SEO meta descriptions.
+
+### Changed
+- `Generator\Extractor::stage_3_sanitize()` now strips `<style>` and `<script>` blocks completely (tag + contents) before `wp_kses` runs. Uses the same regex `wp_strip_all_tags()` uses internally. Caught by sanitize stage, so it covers anything stages 1–2 might surface — Elementor renders, ACF wysiwyg with embedded styles, the_content filter additions, etc.
+- Bumped `Generator\Extractor::CACHE_VERSION` from 2 to 3 so unmodified posts pick up the new clean output on the next read.
+
+### Notes
+- `Audit\RenderedContentCache` does not have the same bug — the audit's downstream rules use `wp_strip_all_tags()` (which does strip style/script content) for word counts and text inspection, so audit results were already clean.
+
 ## [0.1.15] - 2026-06-09
 
 ### Changed

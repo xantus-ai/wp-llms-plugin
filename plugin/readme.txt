@@ -4,7 +4,7 @@ Tags: llms.txt, ai search, ai seo, llms, ai discoverability
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 0.1.15
+Stable tag: 0.1.16
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,9 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 
 == Changelog ==
 
+= 0.1.16 =
+* Fixed: Elementor's inline CSS no longer leaks into llms.txt descriptions, llms-full.txt content, or `.md` endpoints. wp_kses was stripping the `<style>` tags but preserving the CSS text inside; now stripped tag-and-contents before sanitization.
+
 = 0.1.15 =
 * Changed: Audit page issues table is now paginated (50/page) and filterable by severity (All / Critical / Warning / Info) and by rule. Sites with thousands of open issues are now reviewable.
 
@@ -145,6 +148,9 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 * Initial scaffold release.
 
 == Upgrade Notice ==
+
+= 0.1.16 =
+Fixes Elementor CSS leaking into llms.txt descriptions. After upgrading, save any post or trigger regeneration to refresh llms.txt — cache version bumped so stale entries clear on next read.
 
 = 0.1.15 =
 Audit page issues table is now paginated and filterable. No schema or behavior change to the audit itself.

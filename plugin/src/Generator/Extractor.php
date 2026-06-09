@@ -26,7 +26,7 @@ final class Extractor {
      * sources appended) so existing transients don't shadow the new output
      * across plugin upgrades.
      */
-    private const CACHE_VERSION = 2;
+    private const CACHE_VERSION = 3;
 
     private const ALLOWED_TAGS = [
         'h1' => [], 'h2' => [], 'h3' => [], 'h4' => [], 'h5' => [], 'h6' => [],
@@ -160,6 +160,15 @@ final class Extractor {
     }
 
     private function stage_3_sanitize(string $html): string {
+        // Strip <style> and <script> blocks completely (tag + contents) before
+        // wp_kses runs. wp_kses removes the tags but preserves the text inside,
+        // so CSS declarations and JS source code leak through as raw text and
+        // end up in llms.txt descriptions. Elementor in particular emits
+        // per-post inline <style> blocks containing element selectors that
+        // otherwise surface as garbage like
+        //   ".elementor-101102 .elementor-element-f59338d > .elementor-container{...}"
+        // Same pattern wp_strip_all_tags() uses internally.
+        $html = preg_replace('#<(style|script)\b[^>]*>.*?</\1>#is', '', $html) ?? $html;
         return wp_kses($html, self::ALLOWED_TAGS);
     }
 
