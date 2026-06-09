@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.13] - 2026-06-08
+
+### Fixed
+- `missing_h1` rule no longer reports false positives on custom post types whose templates render the title as `<h1>` (Videos, Member Reviews, Topics, Courses — basically any CPT using WordPress's normal single-{type}.php template hierarchy). The previous default was to check every non-builder post type for an in-content H1, which was the wrong shape — most CPTs follow the post/page/product pattern where the H1 comes from the template, not the content. The default is now inverted: skip the in-content H1 check for non-builder posts, and let site owners opt specific types in via `wpllms_missing_h1_force_check_post_types` (default: `[]`). Builder-driven posts (Elementor, etc.) are always checked because the builder owns the rendered output.
+- **Stale rendered-content caches no longer survive plugin upgrades.** Both `Audit\RenderedContentCache` and `Generator\Extractor` keyed their transients only on `post_modified_gmt`, so after upgrading from a version that produced different rendered output (e.g., v0.1.11 → v0.1.12 added ACF content), unmodified posts still hit the pre-upgrade cache and the new code's behavior was invisible. Added a `CACHE_VERSION` constant baked into both cache keys; bumping it on any output-shape change forces fresh renders on next read. Bumped both to v2 for this release.
+
+### Removed
+- `wpllms_missing_h1_template_post_types` filter (from v0.1.11). Now a no-op because the default skip set is "every non-builder post type." Replaced by the inverse-shape `wpllms_missing_h1_force_check_post_types` filter for opting specific types back into the check.
+
+### Added
+- `wpllms_missing_h1_force_check_post_types` filter for site owners who want the in-content H1 check enforced on specific custom post types (e.g., custom landing-page types whose templates intentionally don't render the title). Default: `[]`.
+
 ## [0.1.12] - 2026-06-08
 
 ### Fixed

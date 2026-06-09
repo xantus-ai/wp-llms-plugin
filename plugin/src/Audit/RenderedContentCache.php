@@ -21,6 +21,14 @@ use WP_Post;
  * the_content filter output).
  */
 final class RenderedContentCache {
+    /**
+     * Bump when the format/content of the rendered HTML returned by render()
+     * changes in a way that should invalidate previously-cached entries on
+     * upgrade. Without this, cache keys collide on the same post_modified_gmt
+     * across plugin versions, and the audit silently reads pre-upgrade output.
+     */
+    private const CACHE_VERSION = 2;
+
     public static function get(WP_Post $post): string {
         $cache_key = self::cache_key($post);
         $cached = get_transient($cache_key);
@@ -58,7 +66,7 @@ final class RenderedContentCache {
 
     private static function cache_key(WP_Post $post): string {
         $modified = strtotime($post->post_modified_gmt) ?: 0;
-        return sprintf('wpllms_rendered_%d_%d', $post->ID, $modified);
+        return sprintf('wpllms_rendered_v%d_%d_%d', self::CACHE_VERSION, $post->ID, $modified);
     }
 
     private static function is_elementor_post(int $post_id): bool {

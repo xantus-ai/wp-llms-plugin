@@ -21,6 +21,13 @@ use WP_Post;
  * Stage 6: Post-process markdown (collapse newlines, absolute URLs, etc.)
  */
 final class Extractor {
+    /**
+     * Bump when the pipeline's output format changes (e.g., new content
+     * sources appended) so existing transients don't shadow the new output
+     * across plugin upgrades.
+     */
+    private const CACHE_VERSION = 2;
+
     private const ALLOWED_TAGS = [
         'h1' => [], 'h2' => [], 'h3' => [], 'h4' => [], 'h5' => [], 'h6' => [],
         'p' => [], 'ul' => [], 'ol' => [], 'li' => [],
@@ -80,7 +87,7 @@ final class Extractor {
 
     private function cache_key(string $kind, WP_Post $post): string {
         $modified = strtotime($post->post_modified_gmt) ?: 0;
-        return sprintf('wpllms_extracted_%s_%d_%d', $kind, $post->ID, $modified);
+        return sprintf('wpllms_extracted_v%d_%s_%d_%d', self::CACHE_VERSION, $kind, $post->ID, $modified);
     }
 
     private function stage_1_resolve_source(WP_Post $post): string {
