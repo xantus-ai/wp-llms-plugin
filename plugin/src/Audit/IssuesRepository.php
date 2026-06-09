@@ -81,6 +81,70 @@ final class IssuesRepository {
     }
 
     /**
+     * Paginated/filtered query for the audit page table.
+     *
+     * @param string|null $severity One of 'critical', 'warning', 'info', or null for all.
+     * @param string|null $rule Rule key like 'missing_h1', or null for all.
+     * @return array<int,array<string,mixed>>
+     */
+    public function unresolved_filtered(?string $severity = null, ?string $rule = null, int $limit = 50, int $offset = 0): array {
+        global $wpdb;
+        $table = Schema::table_name('audit_issues');
+
+        [$where_sql, $values] = $this->build_filter_where($severity, $rule);
+        $values[] = $limit;
+        $values[] = $offset;
+
+        $sql = "SELECT * FROM {$table} WHERE {$where_sql} ORDER BY FIELD(severity, 'critical', 'warning', 'info'), detected_at DESC LIMIT %d OFFSET %d";
+        $rows = $wpdb->get_results($wpdb->prepare($sql, ...$values), ARRAY_A);
+        return is_array($rows) ? $rows : [];
+    }
+
+    public function unresolved_count_filtered(?string $severity = null, ?string $rule = null): int {
+        global $wpdb;
+        $table = Schema::table_name('audit_issues');
+
+        [$where_sql, $values] = $this->build_filter_where($severity, $rule);
+        $sql = "SELECT COUNT(*) FROM {$table} WHERE {$where_sql}";
+        if (count($values) === 0) {
+            return (int) $wpdb->get_var($sql);
+        }
+        return (int) $wpdb->get_var($wpdb->prepare($sql, ...$values));
+    }
+
+    /**
+     * Distinct rule keys currently present in the unresolved set. Used to
+     * populate the rule filter dropdown — only rules with open issues appear.
+     *
+     * @return string[]
+     */
+    public function distinct_unresolved_rules(): array {
+        global $wpdb;
+        $table = Schema::table_name('audit_issues');
+        $rows = $wpdb->get_col("SELECT DISTINCT rule FROM {$table} WHERE resolved_at IS NULL ORDER BY rule ASC");
+        return is_array($rows) ? array_map('strval', $rows) : [];
+    }
+
+    /**
+     * @return array{0:string,1:array<int,string>}
+     */
+    private function build_filter_where(?string $severity, ?string $rule): array {
+        $where = ['resolved_at IS NULL'];
+        $values = [];
+
+        if ($severity !== null && in_array($severity, ['critical', 'warning', 'info'], true)) {
+            $where[] = 'severity = %s';
+            $values[] = $severity;
+        }
+        if ($rule !== null && $rule !== '') {
+            $where[] = 'rule = %s';
+            $values[] = $rule;
+        }
+
+        return [implode(' AND ', $where), $values];
+    }
+
+    /**
      * @return array<int,array<string,mixed>>
      */
     public function for_post(int $post_id): array {

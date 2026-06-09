@@ -4,7 +4,7 @@ Tags: llms.txt, ai search, ai seo, llms, ai discoverability
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 0.1.14
+Stable tag: 0.1.15
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,9 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 
 == Changelog ==
 
+= 0.1.15 =
+* Changed: Audit page issues table is now paginated (50/page) and filterable by severity (All / Critical / Warning / Info) and by rule. Sites with thousands of open issues are now reviewable.
+
 = 0.1.14 =
 * Changed: `missing_h1` is now opt-in for every post type. The H1 on a rendered page can come from many sources the audit can't see from inside the admin (theme templates, Elementor Theme Builder, custom hooks), so the rule defaulted to false positives on real sites. Enable it for specific post types via the `wpllms_missing_h1_force_check_post_types` filter.
 
@@ -142,6 +145,9 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 * Initial scaffold release.
 
 == Upgrade Notice ==
+
+= 0.1.15 =
+Audit page issues table is now paginated and filterable. No schema or behavior change to the audit itself.
 
 = 0.1.14 =
 `missing_h1` is now opt-in. Re-run the audit after upgrading to clear stale findings.

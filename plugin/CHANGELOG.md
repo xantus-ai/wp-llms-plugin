@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.15] - 2026-06-09
+
+### Changed
+- Audit page issues table is now paginated and filterable. Sites with thousands of open issues were unreviewable — the previous render fetched a flat list of 200 with no way to drill into a specific severity or rule. The new UI adds:
+  - **Severity filter tabs** (All / Critical / Warning / Info) using the WP-standard `subsubsub` list pattern, each with a count.
+  - **Rule filter dropdown** populated dynamically from distinct rules with open findings; auto-submits on change with a noscript fallback.
+  - **50 issues per page** with WordPress's `paginate_links()` UI rendered above and below the table.
+- The standalone severity counts table is removed — the tabs at the top now serve that role and are also the navigation control.
+
+### Added
+- `Audit\IssuesRepository::unresolved_filtered($severity, $rule, $limit, $offset)` — paginated/filtered query used by the audit page.
+- `Audit\IssuesRepository::unresolved_count_filtered($severity, $rule)` — pagination total for the same filter set.
+- `Audit\IssuesRepository::distinct_unresolved_rules()` — distinct rule keys with open findings, used to populate the rule dropdown.
+
 ## [0.1.14] - 2026-06-08
 
 ### Changed
