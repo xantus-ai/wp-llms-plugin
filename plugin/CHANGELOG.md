@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.14] - 2026-06-08
+
+### Changed
+- `missing_h1` is now opt-in. The default skip set is **every post type**, including Elementor-built posts. After v0.1.13 inverted the default for non-builder post types, false positives kept surfacing on Elementor pages where the H1 is rendered by Elementor Theme Builder's single-page templates, Theme Builder headers, or other sources outside the post's own widget content. The audit only sees the post's own builder content via `get_builder_content_for_display()`, which is a strict subset of the rendered front-end HTML — there is no way to reliably detect a rendered H1 from inside the WordPress admin without fetching the front-end URL. Rather than continue chasing false positives, the rule now skips by default and is opt-in per post type via the existing `wpllms_missing_h1_force_check_post_types` filter. Set the filter to a list of post types whose templates you know will not render the title (custom landing-page CPTs, etc.) to enforce the in-content H1 check there.
+
+### Notes
+- Existing `missing_h1` issues persist in the database until the next audit run clears them. Re-run the audit after upgrading to clean them out (the audit's per-post `clear_for_post()` step handles this automatically).
+- A future release may add an opt-in "accurate mode" that fetches the front-end URL for each post and parses the actual rendered HTML for the H1. This is how professional SEO audit tools handle the problem and is the only way to know for certain. Not in scope for this release.
+
 ## [0.1.13] - 2026-06-08
 
 ### Fixed

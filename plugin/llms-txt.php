@@ -3,7 +3,7 @@
  * Plugin Name:       llms.txt for WordPress
  * Plugin URI:        https://github.com/xantus-ai/wp-llms-plugin
  * Description:       Make your WordPress site discoverable by AI. Auto-generate and maintain llms.txt, audit content for AI-search readiness, and serve per-page markdown variants.
- * Version:           0.1.13
+ * Version:           0.1.14
  * Requires at least: 6.0
  * Requires PHP:      8.1
  * Author:            Xantus AI
@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('WPLLMS_VERSION', '0.1.13');
+define('WPLLMS_VERSION', '0.1.14');
 define('WPLLMS_FILE', __FILE__);
 define('WPLLMS_PATH', plugin_dir_path(__FILE__));
 define('WPLLMS_URL', plugin_dir_url(__FILE__));

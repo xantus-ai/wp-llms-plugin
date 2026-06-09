@@ -4,7 +4,7 @@ Tags: llms.txt, ai search, ai seo, llms, ai discoverability
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 0.1.13
+Stable tag: 0.1.14
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,9 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 
 == Changelog ==
 
+= 0.1.14 =
+* Changed: `missing_h1` is now opt-in for every post type. The H1 on a rendered page can come from many sources the audit can't see from inside the admin (theme templates, Elementor Theme Builder, custom hooks), so the rule defaulted to false positives on real sites. Enable it for specific post types via the `wpllms_missing_h1_force_check_post_types` filter.
+
 = 0.1.13 =
 * Fixed: `missing_h1` rule no longer flags custom post types whose theme template renders the title as `<h1>` (Videos, Member Reviews, custom CPTs, etc.). Default behavior inverted: non-builder posts skip the in-content H1 check.
 * Fixed: Rendered-content caches are now versioned, so plugin upgrades that change the rendered output (e.g., v0.1.12 ACF append) take effect on already-cached unmodified posts.
@@ -139,6 +142,9 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 * Initial scaffold release.
 
 == Upgrade Notice ==
+
+= 0.1.14 =
+`missing_h1` is now opt-in. Re-run the audit after upgrading to clear stale findings.
 
 = 0.1.13 =
 Fixes missing-H1 false positives on most custom post types and invalidates stale render caches from earlier versions. Re-run the audit after upgrading.
