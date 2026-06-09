@@ -58,6 +58,7 @@ final class Plugin {
 
         add_action('admin_post_' . WizardPage::FORM_ACTION, [WizardPage::class, 'handle_post']);
         add_action('admin_post_' . AuditPage::FORM_ACTION, [AuditPage::class, 'handle_run']);
+        add_action('admin_post_' . AuditPage::EXPORT_ACTION, [AuditPage::class, 'handle_export']);
         add_action('admin_post_' . SectionsPage::FORM_ACTION, [SectionsPage::class, 'handle_post']);
         add_action('admin_post_' . SectionEditPage::FORM_ACTION, [SectionEditPage::class, 'handle_post']);
         add_action('wp_ajax_wpllms_search_posts', [SectionEditPage::class, 'handle_search']);
@@ -71,6 +72,14 @@ final class Plugin {
             return;
         }
         if ($post->post_status !== 'publish' && $post->post_status !== 'private') {
+            // Post is now draft / pending / trash / etc. Clear any audit
+            // issues left over from when it was published, refresh the
+            // llms.txt cache (a previously-included post is now gone), and
+            // bail. The full-site audit only iterates publish posts, so
+            // without this cleanup the stale findings persist indefinitely.
+            (new IssuesRepository())->clear_for_post($post_id);
+            FileServer::invalidate_cache();
+            self::maybe_write_static_files();
             return;
         }
 

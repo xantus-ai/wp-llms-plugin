@@ -83,6 +83,10 @@ final class IssuesRepository {
     /**
      * Paginated/filtered query for the audit page table.
      *
+     * Joined against wp_posts so only issues for currently-published posts
+     * are returned — drafts, pending, trash, and deleted posts are hidden
+     * even if their issue rows are still in the table.
+     *
      * @param string|null $severity One of 'critical', 'warning', 'info', or null for all.
      * @param string|null $rule Rule key like 'missing_h1', or null for all.
      * @return array<int,array<string,mixed>>
@@ -91,11 +95,15 @@ final class IssuesRepository {
         global $wpdb;
         $table = Schema::table_name('audit_issues');
 
-        [$where_sql, $values] = $this->build_filter_where($severity, $rule);
+        [$where_sql, $values] = $this->build_filter_where($severity, $rule, 'i');
         $values[] = $limit;
         $values[] = $offset;
 
-        $sql = "SELECT * FROM {$table} WHERE {$where_sql} ORDER BY FIELD(severity, 'critical', 'warning', 'info'), detected_at DESC LIMIT %d OFFSET %d";
+        $sql = "SELECT i.* FROM {$table} i
+                INNER JOIN {$wpdb->posts} p ON p.ID = i.post_id
+                WHERE {$where_sql} AND p.post_status = 'publish'
+                ORDER BY FIELD(i.severity, 'critical', 'warning', 'info'), i.detected_at DESC
+                LIMIT %d OFFSET %d";
         $rows = $wpdb->get_results($wpdb->prepare($sql, ...$values), ARRAY_A);
         return is_array($rows) ? $rows : [];
     }
@@ -104,8 +112,10 @@ final class IssuesRepository {
         global $wpdb;
         $table = Schema::table_name('audit_issues');
 
-        [$where_sql, $values] = $this->build_filter_where($severity, $rule);
-        $sql = "SELECT COUNT(*) FROM {$table} WHERE {$where_sql}";
+        [$where_sql, $values] = $this->build_filter_where($severity, $rule, 'i');
+        $sql = "SELECT COUNT(*) FROM {$table} i
+                INNER JOIN {$wpdb->posts} p ON p.ID = i.post_id
+                WHERE {$where_sql} AND p.post_status = 'publish'";
         if (count($values) === 0) {
             return (int) $wpdb->get_var($sql);
         }
@@ -113,31 +123,61 @@ final class IssuesRepository {
     }
 
     /**
-     * Distinct rule keys currently present in the unresolved set. Used to
-     * populate the rule filter dropdown — only rules with open issues appear.
+     * Same filter set as unresolved_filtered() but without LIMIT/OFFSET.
+     * Used by the CSV export. Memory-safe up to ~100k rows on default
+     * WordPress hosting; chunk if you expect more.
+     *
+     * @return array<int,array<string,mixed>>
+     */
+    public function unresolved_filtered_all(?string $severity = null, ?string $rule = null): array {
+        global $wpdb;
+        $table = Schema::table_name('audit_issues');
+
+        [$where_sql, $values] = $this->build_filter_where($severity, $rule, 'i');
+        $sql = "SELECT i.* FROM {$table} i
+                INNER JOIN {$wpdb->posts} p ON p.ID = i.post_id
+                WHERE {$where_sql} AND p.post_status = 'publish'
+                ORDER BY FIELD(i.severity, 'critical', 'warning', 'info'), i.detected_at DESC";
+        if (count($values) === 0) {
+            $rows = $wpdb->get_results($sql, ARRAY_A);
+        } else {
+            $rows = $wpdb->get_results($wpdb->prepare($sql, ...$values), ARRAY_A);
+        }
+        return is_array($rows) ? $rows : [];
+    }
+
+    /**
+     * Distinct rule keys currently present in the unresolved set for
+     * currently-published posts. Used to populate the rule filter dropdown.
      *
      * @return string[]
      */
     public function distinct_unresolved_rules(): array {
         global $wpdb;
         $table = Schema::table_name('audit_issues');
-        $rows = $wpdb->get_col("SELECT DISTINCT rule FROM {$table} WHERE resolved_at IS NULL ORDER BY rule ASC");
+        $rows = $wpdb->get_col(
+            "SELECT DISTINCT i.rule FROM {$table} i
+             INNER JOIN {$wpdb->posts} p ON p.ID = i.post_id
+             WHERE i.resolved_at IS NULL AND p.post_status = 'publish'
+             ORDER BY i.rule ASC"
+        );
         return is_array($rows) ? array_map('strval', $rows) : [];
     }
 
     /**
      * @return array{0:string,1:array<int,string>}
      */
-    private function build_filter_where(?string $severity, ?string $rule): array {
-        $where = ['resolved_at IS NULL'];
+    private function build_filter_where(?string $severity, ?string $rule, string $alias = ''): array {
+        $prefix = $alias !== '' ? $alias . '.' : '';
+        $where = [$prefix . 'resolved_at IS NULL'];
         $values = [];
 
         if ($severity !== null && in_array($severity, ['critical', 'warning', 'info'], true)) {
-            $where[] = 'severity = %s';
+            $where[] = $prefix . 'severity = %s';
             $values[] = $severity;
         }
         if ($rule !== null && $rule !== '') {
-            $where[] = 'rule = %s';
+            $where[] = $prefix . 'rule = %s';
             $values[] = $rule;
         }
 
@@ -158,13 +198,19 @@ final class IssuesRepository {
     }
 
     /**
+     * Open-issue counts grouped by severity, scoped to currently-published
+     * posts only. Used by the dashboard summary and the audit page tabs.
+     *
      * @return array<string,int>
      */
     public function counts_by_severity(): array {
         global $wpdb;
         $table = Schema::table_name('audit_issues');
         $rows = $wpdb->get_results(
-            "SELECT severity, COUNT(*) AS cnt FROM {$table} WHERE resolved_at IS NULL GROUP BY severity",
+            "SELECT i.severity, COUNT(*) AS cnt FROM {$table} i
+             INNER JOIN {$wpdb->posts} p ON p.ID = i.post_id
+             WHERE i.resolved_at IS NULL AND p.post_status = 'publish'
+             GROUP BY i.severity",
             ARRAY_A
         );
         $out = ['critical' => 0, 'warning' => 0, 'info' => 0];

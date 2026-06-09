@@ -10,6 +10,9 @@ final class AuditPage {
     public const FORM_ACTION = 'wpllms_run_audit';
     public const NONCE_ACTION = 'wpllms_run_audit';
     public const NONCE_NAME = 'wpllms_audit_nonce';
+    public const EXPORT_ACTION = 'wpllms_export_audit';
+    public const EXPORT_NONCE_ACTION = 'wpllms_export_audit';
+    public const EXPORT_NONCE_NAME = 'wpllms_audit_export_nonce';
 
     private const PER_PAGE = 50;
     private const ALLOWED_SEVERITIES = ['critical', 'warning', 'info'];
@@ -98,11 +101,36 @@ final class AuditPage {
         <?php endif; ?>
 
         <?php if (!is_array($progress)) : ?>
-            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="margin:16px 0">
-                <?php wp_nonce_field(self::NONCE_ACTION, self::NONCE_NAME); ?>
-                <input type="hidden" name="action" value="<?php echo esc_attr(self::FORM_ACTION); ?>">
-                <button type="submit" class="button"><?php esc_html_e('Run full-site audit now', 'llms-txt'); ?></button>
-            </form>
+            <p style="margin:16px 0">
+                <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display:inline">
+                    <?php wp_nonce_field(self::NONCE_ACTION, self::NONCE_NAME); ?>
+                    <input type="hidden" name="action" value="<?php echo esc_attr(self::FORM_ACTION); ?>">
+                    <button type="submit" class="button"><?php esc_html_e('Run full-site audit now', 'llms-txt'); ?></button>
+                </form>
+                <?php if ($total_all > 0) : ?>
+                    <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display:inline;margin-left:6px">
+                        <?php wp_nonce_field(self::EXPORT_NONCE_ACTION, self::EXPORT_NONCE_NAME); ?>
+                        <input type="hidden" name="action" value="<?php echo esc_attr(self::EXPORT_ACTION); ?>">
+                        <?php if ($severity_filter !== null) : ?>
+                            <input type="hidden" name="severity" value="<?php echo esc_attr($severity_filter); ?>">
+                        <?php endif; ?>
+                        <?php if ($rule_filter !== null) : ?>
+                            <input type="hidden" name="rule" value="<?php echo esc_attr($rule_filter); ?>">
+                        <?php endif; ?>
+                        <button type="submit" class="button">
+                            <?php
+                            if ($severity_filter !== null || $rule_filter !== null) {
+                                /* translators: %d: count of filtered issues */
+                                printf(esc_html__('Export filtered (%d) to CSV', 'llms-txt'), $total_filtered);
+                            } else {
+                                /* translators: %d: total open-issue count */
+                                printf(esc_html__('Export all (%d) to CSV', 'llms-txt'), $total_all);
+                            }
+                            ?>
+                        </button>
+                    </form>
+                <?php endif; ?>
+            </p>
         <?php endif; ?>
 
         <?php
@@ -252,6 +280,58 @@ final class AuditPage {
             <br class="clear">
         </div>
         <?php
+    }
+
+    public static function handle_export(): void {
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('Insufficient permissions.', 'llms-txt'));
+        }
+        check_admin_referer(self::EXPORT_NONCE_ACTION, self::EXPORT_NONCE_NAME);
+
+        $severity_raw = isset($_POST['severity']) ? sanitize_key((string) $_POST['severity']) : '';
+        $severity = in_array($severity_raw, self::ALLOWED_SEVERITIES, true) ? $severity_raw : null;
+        $rule_raw = isset($_POST['rule']) ? sanitize_key((string) $_POST['rule']) : '';
+        $rule = $rule_raw !== '' ? $rule_raw : null;
+
+        $issues = (new IssuesRepository())->unresolved_filtered_all($severity, $rule);
+
+        $filter_suffix = '';
+        if ($severity !== null) $filter_suffix .= '-' . $severity;
+        if ($rule !== null) $filter_suffix .= '-' . $rule;
+        $filename = 'llms-txt-audit' . $filter_suffix . '-' . gmdate('Y-m-d') . '.csv';
+
+        nocache_headers();
+        header('Content-Type: text/csv; charset=UTF-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+        $out = fopen('php://output', 'w');
+        if ($out === false) {
+            wp_die(esc_html__('Could not open output stream for CSV export.', 'llms-txt'));
+        }
+
+        // UTF-8 BOM so Excel opens the CSV with the correct encoding.
+        fwrite($out, "\xEF\xBB\xBF");
+
+        fputcsv($out, ['Severity', 'Rule', 'Post ID', 'Post title', 'Post URL', 'Message', 'Suggested fix', 'Detected at']);
+
+        foreach ($issues as $issue) {
+            $post = get_post((int) $issue['post_id']);
+            $title = $post ? get_the_title($post) : '(deleted)';
+            $url = $post ? (string) get_permalink($post) : '';
+            fputcsv($out, [
+                (string) ($issue['severity'] ?? ''),
+                (string) ($issue['rule'] ?? ''),
+                (int) ($issue['post_id'] ?? 0),
+                $title,
+                $url,
+                (string) ($issue['message'] ?? ''),
+                (string) ($issue['suggested_fix'] ?? ''),
+                (string) ($issue['detected_at'] ?? ''),
+            ]);
+        }
+
+        fclose($out);
+        exit;
     }
 
     public static function handle_run(): void {

@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.18] - 2026-06-09
+
+### Added
+- **CSV export on the audit page.** Button next to "Run full-site audit now". Exports all currently-visible issues (respects the active severity / rule filters) as a UTF-8 CSV with headers `Severity, Rule, Post ID, Post title, Post URL, Message, Suggested fix, Detected at`. UTF-8 BOM is written so Excel opens the file in the correct encoding. Filename includes the active filters and date for easy archiving (`llms-txt-audit-warning-thin_content-2026-06-09.csv`). Backed by new `IssuesRepository::unresolved_filtered_all()` and the `wpllms_export_audit` admin-post action.
+
+### Fixed
+- **Audit no longer shows issues for non-published posts.** Two paths into this state:
+  - When a previously-published post transitioned to draft / pending / trash, `Plugin::on_save_post()` skipped the audit (correct) but didn't clear the post's existing issue rows (wrong) — so the table kept showing stale findings for content that was no longer indexed. Now clears issues on transition away from publish.
+  - Bulk edits, REST API writes, and any other path that doesn't go through `save_post` could leave issue rows for posts that quietly changed status. The audit page queries (`unresolved_filtered`, `unresolved_count_filtered`, `unresolved_filtered_all`, `distinct_unresolved_rules`, `counts_by_severity`) now JOIN against `wp_posts` and filter on `post_status = 'publish'`, so non-published posts are hidden regardless of how their status changed.
+
+### Notes
+- The dashboard's severity counts and the audit page's tab counts now reflect "open issues on currently-published posts" rather than "rows in the table." For most sites this means counts go down on upgrade — that's the bug fix, not a regression.
+
 ## [0.1.17] - 2026-06-09
 
 ### Fixed
