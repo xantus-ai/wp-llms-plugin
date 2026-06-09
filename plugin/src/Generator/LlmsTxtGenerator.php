@@ -46,11 +46,8 @@ final class LlmsTxtGenerator {
 
     private function render_section(array $section): string {
         $posts = $this->section_resolver->resolve($section);
-        if (count($posts) === 0) {
-            return '';
-        }
-
         $section_id = isset($section['id']) ? (int) $section['id'] : null;
+
         $entries = [];
         foreach ($posts as $post) {
             $entry = $this->render_entry($post, $section_id);
@@ -59,22 +56,29 @@ final class LlmsTxtGenerator {
             }
         }
 
-        if (count($entries) === 0) {
+        $intro = trim((string) ($section['intro_text'] ?? ''));
+
+        // Skip section entirely only when it has no content at all — no intro
+        // text and no resolvable entries. Sections with intro text but no
+        // entries still render: standalone descriptive sections (e.g., an
+        // "Areas of Expertise" bullet list) are a valid use of the format.
+        if ($intro === '' && count($entries) === 0) {
             return '';
         }
 
         $lines = [];
         $lines[] = '## ' . trim((string) $section['name']);
 
-        $intro = trim((string) ($section['intro_text'] ?? ''));
         if ($intro !== '') {
             $lines[] = '';
             $lines[] = $intro;
         }
 
-        $lines[] = '';
-        foreach ($entries as $entry) {
-            $lines[] = $entry;
+        if (count($entries) > 0) {
+            $lines[] = '';
+            foreach ($entries as $entry) {
+                $lines[] = $entry;
+            }
         }
 
         return implode("\n", $lines);
@@ -86,9 +90,8 @@ final class LlmsTxtGenerator {
         $any_rendered = false;
         foreach ($optional_sections as $section) {
             $posts = $this->section_resolver->resolve($section);
-            if (count($posts) === 0) continue;
-
             $section_id = isset($section['id']) ? (int) $section['id'] : null;
+
             $entries = [];
             foreach ($posts as $post) {
                 $entry = $this->render_entry($post, $section_id);
@@ -96,20 +99,26 @@ final class LlmsTxtGenerator {
                     $entries[] = $entry;
                 }
             }
-            if (count($entries) === 0) continue;
+
+            $intro = trim((string) ($section['intro_text'] ?? ''));
+
+            // Same rule as render_section: render the sub-section when it
+            // has either intro text or entries. Skip only when both are empty.
+            if ($intro === '' && count($entries) === 0) continue;
 
             $lines[] = '';
             $lines[] = '### ' . trim((string) $section['name']);
 
-            $intro = trim((string) ($section['intro_text'] ?? ''));
             if ($intro !== '') {
                 $lines[] = '';
                 $lines[] = $intro;
             }
 
-            $lines[] = '';
-            foreach ($entries as $entry) {
-                $lines[] = $entry;
+            if (count($entries) > 0) {
+                $lines[] = '';
+                foreach ($entries as $entry) {
+                    $lines[] = $entry;
+                }
             }
             $any_rendered = true;
         }

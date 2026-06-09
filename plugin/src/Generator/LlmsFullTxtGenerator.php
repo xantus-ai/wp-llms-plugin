@@ -56,10 +56,6 @@ final class LlmsFullTxtGenerator {
 
     private function render_section(array $section, int $level): string {
         $posts = $this->section_resolver->resolve($section);
-        if (count($posts) === 0) {
-            return '';
-        }
-
         $section_id = isset($section['id']) ? (int) $section['id'] : null;
         $heading = str_repeat('#', $level) . ' ' . trim((string) $section['name']);
 
@@ -71,18 +67,24 @@ final class LlmsFullTxtGenerator {
             }
         }
 
-        if (count($rendered_posts) === 0) {
+        $intro = trim((string) ($section['intro_text'] ?? ''));
+
+        // Skip section entirely only when it has no content at all — no intro
+        // text and no resolvable entries. Sections with intro text but no
+        // entries still render (standalone descriptive sections).
+        if ($intro === '' && count($rendered_posts) === 0) {
             return '';
         }
 
-        $intro = trim((string) ($section['intro_text'] ?? ''));
         $lines = [$heading];
         if ($intro !== '') {
             $lines[] = '';
             $lines[] = $intro;
         }
-        $lines[] = '';
-        $lines[] = implode("\n\n", $rendered_posts);
+        if (count($rendered_posts) > 0) {
+            $lines[] = '';
+            $lines[] = implode("\n\n", $rendered_posts);
+        }
 
         return implode("\n", $lines);
     }

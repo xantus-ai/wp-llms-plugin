@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.17] - 2026-06-09
+
+### Fixed
+- Sections with intro text but no posts now render. Both `LlmsTxtGenerator::render_section()` and `LlmsFullTxtGenerator::render_section()` were short-circuiting on zero entries and returning an empty string, discarding the section's H2 heading and its intro text along with the (non-existent) link list. Use case: a standalone descriptive section like "Areas of Expertise" where the intro text *is* the value — a bullet list, a paragraph of context — and there are no per-post entries to link to. Same fix applied to `render_optional_block()` sub-sections under the "## Optional" wrapper.
+- The new rule: a section renders if it has either intro text or resolvable entries (or both). A section is skipped only when both are empty.
+
 ## [0.1.16] - 2026-06-09
 
 ### Fixed

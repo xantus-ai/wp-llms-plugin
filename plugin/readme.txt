@@ -4,7 +4,7 @@ Tags: llms.txt, ai search, ai seo, llms, ai discoverability
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 0.1.16
+Stable tag: 0.1.17
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,9 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 
 == Changelog ==
 
+= 0.1.17 =
+* Fixed: Sections with intro text but no posts now render in llms.txt and llms-full.txt. Previously the generator dropped the entire section (H2 + intro) when the section had no resolvable post entries — so standalone descriptive sections like an "Areas of Expertise" bullet list disappeared.
+
 = 0.1.16 =
 * Fixed: Elementor's inline CSS no longer leaks into llms.txt descriptions, llms-full.txt content, or `.md` endpoints. wp_kses was stripping the `<style>` tags but preserving the CSS text inside; now stripped tag-and-contents before sanitization.
 
@@ -148,6 +151,9 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 * Initial scaffold release.
 
 == Upgrade Notice ==
+
+= 0.1.17 =
+Standalone descriptive sections (intro text, no linked posts) now appear in llms.txt instead of being dropped.
 
 = 0.1.16 =
 Fixes Elementor CSS leaking into llms.txt descriptions. After upgrading, save any post or trigger regeneration to refresh llms.txt — cache version bumped so stale entries clear on next read.
