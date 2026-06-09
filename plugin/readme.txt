@@ -4,7 +4,7 @@ Tags: llms.txt, ai search, ai seo, llms, ai discoverability
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 8.1
-Stable tag: 0.1.11
+Stable tag: 0.1.12
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,10 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 
 == Changelog ==
 
+= 0.1.12 =
+* Fixed: ACF content is now read by both the audit and the llms.txt generator. Custom post types whose content lives in ACF fields (Courses, Topics, etc.) no longer get false-positive audit issues and no longer produce empty llms.txt entries or `.md` endpoints.
+* Added: `wpllms_acf_content_excluded_fields` filter to exclude specific field names from the audit and llms.txt output.
+
 = 0.1.11 =
 * Fixed: `missing_h1` rule no longer flags WooCommerce product pages where the product title is rendered as `<h1>` by WooCommerce's template.
 * Added: `wpllms_missing_h1_template_post_types` filter for registering custom post types whose templates render the title as H1.
@@ -130,6 +134,9 @@ In **llms.txt → Settings**, enable "Remove all plugin data when the plugin is 
 * Initial scaffold release.
 
 == Upgrade Notice ==
+
+= 0.1.12 =
+ACF field content is now included in the audit and the llms.txt output. Re-run the audit and re-save any ACF-driven posts after upgrading.
 
 = 0.1.11 =
 Fixes missing-H1 false positives on WooCommerce product pages. Re-run the audit after upgrading.

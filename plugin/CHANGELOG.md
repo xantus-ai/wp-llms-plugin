@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.12] - 2026-06-08
+
+### Fixed
+- ACF (Advanced Custom Fields) content is now read by both the audit and the llms.txt generator. For ACF-heavy custom post types (Courses, Topics, Member Reviews, etc.) the "real" content lives in custom fields rather than `post_content`, so the audit was reporting `missing_h1`, `thin_content`, and `boilerplate_intro` false positives across every such post, and the generator was producing empty descriptions and empty `.md` endpoints. Now both pipelines append ACF field values (text, textarea, wysiwyg, plus recursion into repeaters, groups, and flexible content) to the rendered HTML.
+
+### Added
+- `Content\AcfContent::for_post(int)` — shared helper used by `Audit\RenderedContentCache` and `Generator\Extractor`. Calls ACF's `get_fields()` and recursively concatenates string values; non-string leaves (image IDs, file metadata arrays, taxonomy term arrays) are skipped.
+- `wpllms_acf_content_excluded_fields` filter for site owners who want to keep specific field names (`internal_notes`, `admin_only_flag`, etc.) out of the audit and the llms.txt output. Default: `[]`.
+
+### Notes
+- For posts that use an Elementor template referencing ACF dynamic tags, the same content is now both inside the Elementor render and appended again from `AcfContent::for_post()`. This can produce false positives in `multiple_h1` for that specific combination — the excluded-fields filter is the escape hatch.
+- The cache key for both pipelines is still `post_modified_gmt`, so ACF field updates via the editor invalidate the cache (save_post bumps post_modified). Programmatic `update_field()` calls don't bump post_modified, so explicit cache flush or post re-save is required after those.
+
 ## [0.1.11] - 2026-06-08
 
 ### Fixed

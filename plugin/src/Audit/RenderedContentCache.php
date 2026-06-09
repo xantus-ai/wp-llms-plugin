@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WPLlms\Audit;
 
+use WPLlms\Content\AcfContent;
 use WP_Post;
 
 /**
@@ -33,14 +34,26 @@ final class RenderedContentCache {
     }
 
     private static function render(WP_Post $post): string {
+        $base = '';
         if (self::is_elementor_post($post->ID)) {
-            $rendered = self::render_elementor($post->ID);
-            if ($rendered !== '') {
-                return $rendered;
-            }
+            $base = self::render_elementor($post->ID);
         }
-        $filtered = apply_filters('the_content', (string) $post->post_content);
-        return is_string($filtered) ? $filtered : '';
+        if ($base === '') {
+            $filtered = apply_filters('the_content', (string) $post->post_content);
+            $base = is_string($filtered) ? $filtered : '';
+        }
+
+        // Append ACF content so rules see the real text on ACF-heavy CPTs.
+        // For posts whose Elementor template already renders ACF dynamic tags,
+        // this duplicates content — accepted tradeoff. May produce false
+        // positives in MultipleH1 for that combo; the wpllms_acf_content_
+        // excluded_fields filter is the escape hatch.
+        $acf = AcfContent::for_post($post->ID);
+        if ($acf !== '') {
+            $base .= "\n\n" . $acf;
+        }
+
+        return $base;
     }
 
     private static function cache_key(WP_Post $post): string {

@@ -6,6 +6,7 @@ namespace WPLlms\Generator;
 use DOMDocument;
 use DOMNode;
 use DOMXPath;
+use WPLlms\Content\AcfContent;
 use WP_Post;
 
 /**
@@ -86,14 +87,26 @@ final class Extractor {
         // Elementor stores the page design in _elementor_data meta, not post_content.
         // Always prefer the Elementor frontend render for builder posts; only fall back
         // to post_content if Elementor's frontend renderer is unavailable.
+        $base = '';
         if ($this->is_elementor_post($post->ID)) {
-            $rendered = $this->render_elementor($post->ID);
-            if ($rendered !== '') {
-                return $rendered;
-            }
+            $base = $this->render_elementor($post->ID);
+        }
+        if ($base === '') {
+            $base = (string) $post->post_content;
         }
 
-        return (string) $post->post_content;
+        // Append ACF content so ACF-heavy CPTs (Courses, Topics, etc. with
+        // content in custom fields) produce non-empty llms.txt entries and
+        // .md endpoints. Same tradeoff as in the audit's RenderedContentCache:
+        // for Elementor+ACF posts where the template already renders ACF
+        // dynamic tags, this duplicates — escape hatch is the filter
+        // wpllms_acf_content_excluded_fields.
+        $acf = AcfContent::for_post($post->ID);
+        if ($acf !== '') {
+            $base .= "\n\n" . $acf;
+        }
+
+        return $base;
     }
 
     private function is_elementor_post(int $post_id): bool {
